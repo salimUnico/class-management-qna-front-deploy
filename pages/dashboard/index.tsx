@@ -85,7 +85,7 @@ const Index: FC = () => {
                                                 <tr key={itm._id}>
                                                     <td>{itm?.name}</td>
                                                     <td>{itm?.subject}</td>
-                                                    <td>{dayjs(itm?.date).format('DD-MM-YYYY HH:mm A')}</td>
+                                                    <td>{dayjs(itm?.date).format('DD-MM-YYYY')}</td>
                                                     <td>{itm?.marks}</td>
                                                     <td>
                                                         <Button onClick={() => router.push(`/question-paper/${itm?._id}`)} variant="light">View</Button>

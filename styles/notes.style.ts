@@ -10,9 +10,6 @@ export default createStyles((theme) => ({
             fontSize: 25,
         },
         cursor: 'pointer',
-        ':hover': {
-            color: 'blue'
-        }
     },
     innerHeaderContainer: {
         display: 'flex',

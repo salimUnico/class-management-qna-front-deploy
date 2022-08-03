@@ -9,13 +9,16 @@ const Index: FC = () => {
     const router = useRouter();
     return (
         <div>
-            <Card className={classes.headerContainer} shadow="xs">
-                <Title className={classes.title} ><Text style={{ color: router.pathname.includes('dashboard') ? 'blue' : 'black' }}
-                    onClick={() => router.push('/dashboard')}
-                >Questions</Text></Title>
-                <Title className={classes.title}><Text style={{ color: router.pathname.includes('notes') ? 'blue' : 'black' }}
-                    onClick={() => router.push('/notes')}
-                >Notes</Text></Title>
+           <Card className={classes.headerContainer} shadow="xs">
+                <div className={classes.innerHeaderContainer}>
+                    <Title className={classes.title} ><Text style={{ color: router.pathname.includes('dashboard') ? 'blue' : 'black' }}
+                        onClick={() => router.push('/dashboard')}
+                    >Questions</Text></Title>
+                    <Title className={classes.title}><Text style={{ color: router.pathname.includes('notes') ? 'blue' : 'black' }}
+                        onClick={() => router.push('/notes')}
+                    >Notes</Text></Title>
+                </div>
+                <Button>Create Notes</Button>
             </Card>
         </div>
     );

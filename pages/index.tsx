@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Title, Text, Card, TextInput, Button, PasswordInput } from '@mantine/core';
 import { EnvelopeClosedIcon, LockClosedIcon } from '@modulz/radix-icons';
-import { showNotification } from '@mantine/notifications';
 // import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 
 // styles
 import useStyles from '../styles/index.style';
 //functionalities
 import axios from '../helper/axios';
+import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 
 export default function HomePage() {

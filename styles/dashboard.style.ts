@@ -10,14 +10,25 @@ export default createStyles((theme) => ({
             fontSize: 25,
         },
         cursor: 'pointer',
-        ':hover': {
-            color: 'blue'
-        }
+    },
+    innerHeaderContainer: {
+        display: 'flex',
+        gap: '1rem',
     },
     headerContainer: {
         display: 'flex',
         gap: '1rem',
+        padding: '1rem',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    heading: {
         padding: '1rem'
-    }
-
+    },
+    main: {
+        padding: '1rem',
+        display: 'flex',
+        gap: '1rem',
+        flexWrap: 'wrap'
+    },
 }));

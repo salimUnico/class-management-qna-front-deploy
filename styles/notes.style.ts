@@ -14,10 +14,16 @@ export default createStyles((theme) => ({
             color: 'blue'
         }
     },
+    innerHeaderContainer: {
+        display: 'flex',
+        gap: '1rem',
+    },
     headerContainer: {
         display: 'flex',
         gap: '1rem',
-        padding: '1rem'
+        padding: '1rem',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 
 }));

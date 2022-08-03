@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Title, Text, Card, TextInput, Button } from '@mantine/core';
 import { useRouter } from 'next/router';
 
-import useStyles from '../../styles/dashboard.style';
+import useStyles from '../../styles/notes.style';
 
 const Index: FC = () => {
     const { classes } = useStyles();

@@ -5,7 +5,7 @@ import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react
 // const PDFDownloadLink = dynamic(() => import('@react-pdf/renderer'), {
 //     ssr: false
 // });
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import useStyles from '../../styles/question-paper.style';
 
 import { showNotification } from '@mantine/notifications';
@@ -14,6 +14,9 @@ import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
 
 import AnswerTab from '../../components/AnswerTabs';
+
+
+import DatePicker from "react-multi-date-picker"
 
 const styles = StyleSheet.create({
     page: {
@@ -190,18 +193,65 @@ const QuestionPaperPage: FC = () => {
         </Document>)
     }
 
+    const [modalData, setmodalData] = useState({
+        name: "",
+        subject: "",
+        date: new Date(),
+        marks: ""
+    })
+
+
     return (
         <div className={classes.container}>
             <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
             <main className={classes.leftSide}>
                 <Card shadow={"xs"} className={classes.questionContainer}>
-                    <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />
+                    {/* <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />
                     <TextInput placeholder={questionPaperData.marks} label="Total Marks" style={{ width: '400px' }} id="makrs" />
                     <DatePicker
                         className="datepicker"
                     // selected={startDate} onChange={(date:Date) => setStartDate(date)} 
                     />
-                    <Button onClick={handleQuestionUpdate}>Save</Button>
+                    <Button onClick={handleQuestionUpdate}>Save</Button> */}
+
+
+                    <div className="w-full" style={{ width: 400 }}>
+                        <TextInput
+                            label="Name"
+                            required
+                            value={modalData.name}
+                            onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
+                            id="nameinput"
+                            style={{ marginBottom: "0.5rem" }}
+                        />
+                        <TextInput
+                            label="Subject"
+                            required
+                            value={modalData.subject}
+                            onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
+                            id="subjectinput"
+                            style={{ marginBottom: "0.5rem" }}
+                        />
+                        <TextInput
+                            label="Marks"
+                            required
+                            value={modalData.marks}
+                            onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
+                            id="marksinput"
+                            style={{ marginBottom: "0.5rem" }}
+                            type="number"
+                        />
+
+                        <div style={{ display: "flex", flexDirection: "column" }}>
+                            <label>Date</label>
+                            <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event) => setmodalData({ ...modalData, date: event })} />
+                        </div>
+
+
+                        <div style={{ display: "flex", marginTop: "1rem" }}>
+                            <Button size='sm' style={{ width: "100%"}}>Save</Button>
+                        </div>
+                    </div>
                 </Card>
                 <AnswerTab qpid={router?.query?.id} isUpdate={false} />
                 {

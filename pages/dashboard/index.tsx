@@ -58,11 +58,11 @@ const Index: FC = () => {
 
 
     //Create Question Paper Modal
-    const [addQuestionPaperModal, setaddQuestionPaperModal] = useState<boolean>(true)
+    const [addQuestionPaperModal, setaddQuestionPaperModal] = useState<boolean>(false)
     const [modalData, setmodalData] = useState({
         name: "",
         subject: "",
-        date: "",
+        date: new Date(),
         marks: ""
     })
 
@@ -78,7 +78,7 @@ const Index: FC = () => {
                         onClick={() => router.push('/notes')}
                     >Notes</Text></Title>
                 </div>
-                <Button>Create Question Paper</Button>
+                <Button onClick={()=> setaddQuestionPaperModal(true)}>Create Question Paper</Button>
             </Card>
 
             <Modal
@@ -96,6 +96,9 @@ const Index: FC = () => {
                 id="addQuestionPaperModal"
             >
                 <div className="w-full">
+                    <h3 className="text-xl text-gray-900  mb-5" style={{ marginTop: "-0.3rem" }}>Create Question Paper</h3>
+
+
                     <TextInput
                         label="Name"
                         required
@@ -119,8 +122,19 @@ const Index: FC = () => {
                         onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
                         id="marksinput"
                         style={{ marginBottom: "0.5rem" }}
+                        type="number"
                     />
-                    <DatePicker label="sasasa"  style={{ width: "100%",height: 30 }}  />
+
+                    <div style={{ display: "flex",flexDirection:"column" }}>
+                        <label>Date</label>
+                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event)=> setmodalData({ ...modalData, date: event }) } />
+                    </div>
+
+
+                    <div style={{ display: "flex",marginTop: "1rem" }}>
+                        <Button size='sm'>Save</Button>
+                        <Button color={"red"} size="sm" ml={5}>Cancel</Button>
+                    </div>
                 </div>
             </Modal>
 

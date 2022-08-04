@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Button, Switch, Card, TextInput, Title, } from '@mantine/core';
+import { Button, Switch, Card, TextInput, Title, Tabs } from '@mantine/core';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react-pdf/renderer';
 // import dynamic from 'next/dynamic';
 // const PDFDownloadLink = dynamic(() => import('@react-pdf/renderer'), {
@@ -193,6 +193,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
+            
             <main className={classes.leftSide}>
                 <Card shadow={"xs"} className={classes.questionContainer}>
                     <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />

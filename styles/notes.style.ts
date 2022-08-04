@@ -20,7 +20,8 @@ export default createStyles((theme) => ({
         gap: '1rem',
         padding: '1rem',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+       
     }
 
 }));

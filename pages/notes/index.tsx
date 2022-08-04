@@ -1,35 +1,6 @@
-// import { FC } from 'react';
-// import { Title, Text, Card, TextInput, Button } from '@mantine/core';
-// import { useRouter } from 'next/router';
-
-// import useStyles from '../../styles/notes.style';
-
-// const Index: FC = () => {
-//     const { classes } = useStyles();
-//     const router = useRouter();
-//     return (
-//         <div>
-//            <Card className={classes.headerContainer} shadow="xs">
-//                 <div className={classes.innerHeaderContainer}>
-//                     <Title className={classes.title} ><Text style={{ color: router.pathname.includes('dashboard') ? 'blue' : 'black' }}
-//                         onClick={() => router.push('/dashboard')}
-//                     >Questions</Text></Title>
-//                     <Title className={classes.title}><Text style={{ color: router.pathname.includes('notes') ? 'blue' : 'black' }}
-//                         onClick={() => router.push('/notes')}
-//                     >Notes</Text></Title>
-//                 </div>
-//             </Card>
-//         </div>
-//     );
-// };
-
-// export default Index;
-
-
-
 
 import { FC, useEffect, useState } from 'react';
-import { Title, Text, Card, TextInput, Button, Loader, Table, Modal, useMantineTheme } from '@mantine/core';
+import { Title, Text, Card, TextInput, Button, Loader, Table, Modal, useMantineTheme, Popover } from '@mantine/core';
 import { useRouter } from 'next/router';
 
 import useStyles from '../../styles/dashboard.style';
@@ -47,15 +18,13 @@ const Notes: FC = () => {
     const [loading, setLoading] = useState(false);
     const [questionData, setQuestionData] = useState([]);
 
+    const [note, setNote] = useState({ name: '' });
+
     const handleGetAllQuestionPaper = async () => {
         setLoading(true);
         try {
-            const data = await axios.get('/admin/question/paper',);
+            const data = await axios.get('/admin/notes/',);
             if (data?.data?.success) {
-                showNotification({
-                    title: 'Success',
-                    message: 'All Question paper loaded',
-                });
                 setQuestionData(data?.data?.data)
                 setLoading(false);
             }
@@ -83,11 +52,33 @@ const Notes: FC = () => {
         handleGetAllQuestionPaper();
     }, [])
 
+    const handleAddNote = async () => {
+        try {
+            const data = await axios.post('/admin/notes/', { name: note.name });
+            if (data?.data?.success) {
+                window.location.reload()
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
 
+        }
+    };
 
     return (
         <div>
-            <Card className={classes.headerContainer} shadow="xs">
+            <div className={classes.headerContainer} style={{ boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px' }} >
                 <div className={classes.innerHeaderContainer}>
                     <Title className={classes.title} ><Text style={{ color: router.pathname.includes('dashboard') ? 'blue' : 'black' }}
                         onClick={() => router.push('/dashboard')}
@@ -96,7 +87,16 @@ const Notes: FC = () => {
                         onClick={() => router.push('/notes')}
                     >Notes</Text></Title>
                 </div>
-            </Card>
+                <Popover width={300} position="bottom" withArrow shadow="md" id="popverddnotes">
+                    <Popover.Target>
+                        <Button>Add Note</Button>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <TextInput id="notename" label="Note Name" onChange={e => setNote({ ...note, name: e.target.value })} />
+                        <Button style={{ marginTop: '1rem' }} onClick={handleAddNote}>Add</Button>
+                    </Popover.Dropdown>
+                </Popover>
+            </div>
 
             <main>
                 <Title className={classes.title} ><Text style={{ padding: '1rem' }}>All Notes</Text></Title>
@@ -117,7 +117,7 @@ const Notes: FC = () => {
                                             return (
                                                 <tr key={itm._id}>
                                                     <td>{itm?.name}</td>
-                                                    <td>{itm?.subject}</td>
+                                                    <td>{dayjs(itm?.createdAt).format('DD-MM-YYYY')}</td>
                                                     <td>
                                                         <Button onClick={() => router.push(`/notes/${itm?._id}`)} variant="light">View</Button>
                                                         {" "}

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import { Button, Switch, Card, TextInput, Title, Tabs } from '@mantine/core';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react-pdf/renderer';
 // import dynamic from 'next/dynamic';
@@ -7,6 +7,7 @@ import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react
 // });
 // import DatePicker from "react-datepicker";
 import useStyles from '../../styles/question-paper.style';
+import ReactToPrint from 'react-to-print';
 
 import { showNotification } from '@mantine/notifications';
 import axios from '../../helper/axios';
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         margin: 10,
         padding: 10,
-        width: '700px',
+        width: '770px',
         boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     },
     section: {
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
     const router = useRouter();
-
+    const ref = useRef();
     const [ansOnOff, setAnsOnOff] = useState(false);
 
     const [loading, setLoading] = useState(false);
@@ -194,7 +195,7 @@ const QuestionPaperPage: FC = () => {
 
     const Doc = () => {
         return (<Document>
-            <Page size="A4" style={styles.page}>
+            <Page size="A4" style={styles.page} >
 
                 <View style={styles.section}>
                     <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
@@ -314,8 +315,15 @@ const QuestionPaperPage: FC = () => {
                                         {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
                                     </PDFDownloadLink>
                                 }
+                                <ReactToPrint
+                                    // onBeforePrint={() => { styles.page.boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}
+                                    trigger={() => <Button className="g-font">Download Question Paper</Button>}
+                                    content={() => ref.current}
+                                />
                             </div>
-                            <Doc />
+                            <div ref={ref}>
+                                <Doc />
+                            </div>
                         </div>
                     </main>
                 </Tabs.Panel>

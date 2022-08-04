@@ -226,12 +226,12 @@ const QuestionPaperPage: FC = () => {
         seteditorOption(finalArr)
     }
 
-    console.log('aaaaaaaaaaa',editorOption)
+    console.log('aaaaaaaaaaa', editorOption)
 
     return (
         <div className={classes.container}>
             <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234 }}>
-                <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
+                <Title className={classes.title}><Text>{questionPaperData?.name}</Text></Title>
 
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
@@ -289,7 +289,7 @@ const QuestionPaperPage: FC = () => {
                                                     required
                                                     value={item.value}
                                                     id="titleinput"
-                                                    style={{ marginBottom: "0.5rem",width: "80%" }}
+                                                    style={{ marginBottom: "0.5rem", width: "80%" }}
 
                                                     onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
                                                 />
@@ -333,10 +333,10 @@ const QuestionPaperPage: FC = () => {
                     <main className={classes.rightSide}>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>
-                                <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
+                                {/* <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" /> */}
                                 {
-                                    isClient && <PDFDownloadLink document={<Doc />} fileName="question.pdf">
-                                        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
+                                    isClient && <PDFDownloadLink document={<Doc />} fileName="notes.pdf">
+                                        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Notes ')}
                                     </PDFDownloadLink>
                                 }
                             </div>

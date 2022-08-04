@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Title, Text, Card, TextInput, Button, Loader, Table } from '@mantine/core';
+import { Title, Text, Card, TextInput, Button, Loader, Table, Modal, useMantineTheme } from '@mantine/core';
 import { useRouter } from 'next/router';
 
 import useStyles from '../../styles/dashboard.style';
@@ -8,7 +8,13 @@ import { showNotification } from '@mantine/notifications';
 import axios from '../../helper/axios';
 import dayjs from 'dayjs';
 
+//modal
+import DatePicker from "react-multi-date-picker"
+
+
 const Index: FC = () => {
+    const theme = useMantineTheme();
+
     const { classes } = useStyles();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
@@ -50,6 +56,17 @@ const Index: FC = () => {
         handleGetAllQuestionPaper();
     }, [])
 
+
+    //Create Question Paper Modal
+    const [addQuestionPaperModal, setaddQuestionPaperModal] = useState<boolean>(true)
+    const [modalData, setmodalData] = useState({
+        name: "",
+        subject: "",
+        date: "",
+        marks: ""
+    })
+
+
     return (
         <div>
             <Card className={classes.headerContainer} shadow="xs">
@@ -63,6 +80,51 @@ const Index: FC = () => {
                 </div>
                 <Button>Create Question Paper</Button>
             </Card>
+
+            <Modal
+                centered
+                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                overlayOpacity={0.55}
+                overlayBlur={3}
+
+                size={"lg"}
+                opened={addQuestionPaperModal}
+                onClose={() => setaddQuestionPaperModal(false)}
+                style={{ borderRadius: "50px" }}
+
+                withCloseButton={false}
+                id="addQuestionPaperModal"
+            >
+                <div className="w-full">
+                    <TextInput
+                        label="Name"
+                        required
+                        value={modalData.name}
+                        onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
+                        id="nameinput"
+                        style={{ marginBottom: "0.5rem" }}
+                    />
+                    <TextInput
+                        label="Subject"
+                        required
+                        value={modalData.subject}
+                        onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
+                        id="subjectinput"
+                        style={{ marginBottom: "0.5rem" }}
+                    />
+                    <TextInput
+                        label="Marks"
+                        required
+                        value={modalData.marks}
+                        onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
+                        id="marksinput"
+                        style={{ marginBottom: "0.5rem" }}
+                    />
+                    <DatePicker label="sasasa"  style={{ width: "100%",height: 30 }}  />
+                </div>
+            </Modal>
+
+
             <main>
                 <Title className={classes.title} ><Text style={{ padding: '1rem' }}>All Question Papers</Text></Title>
                 <div className={classes.main}>

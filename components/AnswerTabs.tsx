@@ -96,7 +96,7 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
         <TextInput
             onChange={e => setQna({ ...qna, question: e.target.value })}
             defaultValue={question}
-            label="Question" style={{ width: '400px' }} id="subject"
+            label="Question" style={{ width: '100%F' }} id="subject"
         />
         <div style={{ display: 'flex', gap: '1rem' }}>
             <TextInput
@@ -110,8 +110,6 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
 
                 label="Option 2" style={{ width: '190px' }} id="makrs"
             />
-        </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
             <TextInput
                 defaultValue={option3}
                 onChange={e => setQna({ ...qna, option3: e.target.value })}
@@ -125,10 +123,11 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
                 label="Option 4" style={{ width: '190px' }} id="makrs"
             />
         </div>
+
         <TextInput
             defaultValue={ans}
             onChange={e => setQna({ ...qna, ans: e.target.value })}
-            label="Correct Answer" style={{ width: '400px' }} id="subject"
+            label="Correct Answer" style={{ width: '100%' }} id="subject"
         />{
             isUpdate ?
                 <div style={{ display: 'flex', gap: '1rem' }}>

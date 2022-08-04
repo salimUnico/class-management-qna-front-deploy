@@ -205,32 +205,24 @@ const QuestionPaperPage: FC = () => {
         <div className={classes.container}>
             <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
 
-            <Tabs defaultValue="editor" id='tabid' style={{ width: 500, margin: "0 auto" }}>
+            <Tabs defaultValue="editor" id='tabid' style={{ width: 900, margin: "0 auto" }}>
                 <Tabs.List>
                     <Tabs.Tab value="editor" >Editor</Tabs.Tab>
                     <Tabs.Tab value="preview" >Preview</Tabs.Tab>
                 </Tabs.List>
 
-                <Tabs.Panel value="editor" pt="xs">
+                <Tabs.Panel value="editor" pt="xs" >
                     <main className={classes.leftSide}>
                         <Card shadow={"xs"} className={classes.questionContainer}>
-                            {/* <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />
-                    <TextInput placeholder={questionPaperData.marks} label="Total Marks" style={{ width: '400px' }} id="makrs" />
-                    <DatePicker
-                        className="datepicker"
-                    // selected={startDate} onChange={(date:Date) => setStartDate(date)} 
-                    />
-                    <Button onClick={handleQuestionUpdate}>Save</Button> */}
 
-
-                            <div className="w-full" style={{ width: 400 }}>
+                            <div className="w-full" style={{ display: 'flex', gap: '1rem' }}>
                                 <TextInput
                                     label="Name"
                                     required
                                     value={modalData.name}
                                     onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
                                     id="nameinput"
-                                    style={{ marginBottom: "0.5rem" }}
+                                    style={{ marginBottom: "0.5rem", width: 300 }}
                                 />
                                 <TextInput
                                     label="Subject"
@@ -238,7 +230,7 @@ const QuestionPaperPage: FC = () => {
                                     value={modalData.subject}
                                     onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
                                     id="subjectinput"
-                                    style={{ marginBottom: "0.5rem" }}
+                                    style={{ marginBottom: "0.5rem", width: 300 }}
                                 />
                                 <TextInput
                                     label="Marks"
@@ -246,7 +238,7 @@ const QuestionPaperPage: FC = () => {
                                     value={modalData.marks}
                                     onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
                                     id="marksinput"
-                                    style={{ marginBottom: "0.5rem" }}
+                                    style={{ marginBottom: "0.5rem", width: 300 }}
                                     type="number"
                                 />
 
@@ -261,6 +253,7 @@ const QuestionPaperPage: FC = () => {
                                 </div>
                             </div>
                         </Card>
+
                         <AnswerTab qpid={router?.query?.id} isUpdate={false} />
                         {
                             questionAnswerData?.map((itm: any, i: Number) => {
@@ -298,8 +291,6 @@ const QuestionPaperPage: FC = () => {
                     </main>
                 </Tabs.Panel>
             </Tabs>
-
-
         </div>
     )
 }

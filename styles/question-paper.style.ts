@@ -28,7 +28,8 @@ export default createStyles((theme) => ({
         display: 'flex',
         gap: '1rem',
         padding: '2rem',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        flexDirection: 'column'
     },
     rightSide: {
         // display: 'flex',

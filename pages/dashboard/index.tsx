@@ -65,7 +65,40 @@ const Index: FC = () => {
         date: new Date(),
         marks: ""
     })
-
+    const [loadingAdd, setLoadingAdd] = useState(false);
+    
+    const handleAddQuestionPaper = async () => {
+        setLoadingAdd(true);
+        try {
+            const data = await axios.post(`/admin/question/paper`, {
+                ...modalData
+            });
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Question paper added !",
+                });
+                setLoadingAdd(false);
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingAdd(false);
+        }
+    }
 
     return (
         <div>
@@ -78,7 +111,7 @@ const Index: FC = () => {
                         onClick={() => router.push('/notes')}
                     >Notes</Text></Title>
                 </div>
-                <Button onClick={()=> setaddQuestionPaperModal(true)}>Create Question Paper</Button>
+                <Button onClick={() => setaddQuestionPaperModal(true)}>Create Question Paper</Button>
             </Card>
 
             <Modal
@@ -97,7 +130,6 @@ const Index: FC = () => {
             >
                 <div className="w-full">
                     <h3 className="text-xl text-gray-900  mb-5" style={{ marginTop: "-0.3rem" }}>Create Question Paper</h3>
-
 
                     <TextInput
                         label="Name"
@@ -125,15 +157,15 @@ const Index: FC = () => {
                         type="number"
                     />
 
-                    <div style={{ display: "flex",flexDirection:"column" }}>
+                    <div style={{ display: "flex", flexDirection: "column" }}>
                         <label>Date</label>
-                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event)=> setmodalData({ ...modalData, date: event }) } />
+                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event: any) => setmodalData({ ...modalData, date: dayjs(event).toISOString() })} />
                     </div>
 
 
-                    <div style={{ display: "flex",marginTop: "1rem" }}>
-                        <Button size='sm'>Save</Button>
-                        <Button color={"red"} size="sm" ml={5}>Cancel</Button>
+                    <div style={{ display: "flex", marginTop: "1rem" }}>
+                        <Button size='sm' onClick={handleAddQuestionPaper}>Save</Button>
+                        <Button color={"red"} size="sm" ml={5} onClick={() => setaddQuestionPaperModal(false)}>Cancel</Button>
                     </div>
                 </div>
             </Modal>

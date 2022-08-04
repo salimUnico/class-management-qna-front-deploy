@@ -11,6 +11,7 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
     })
     const [loadingAdd, setLoadingAdd] = useState(false);
     const [loadingUpdate, setLoadingUpdate] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
 
     const handleQAAdd = async () => {
         setLoadingAdd(true);
@@ -91,6 +92,38 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
         }
     }
 
+    const handleQADelete = async () => {
+        setLoadingDelete(true);
+        try {
+            // const { question, option1, ans, option2, option3, option4 } = qna;
+            const data = await axios.delete(`/admin/question/ans/${id}`);
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Question Answer Deleted successfully !",
+                });
+                setLoadingDelete(false);
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingDelete(false);
+        }
+    }
+
 
     return (<Card shadow="xs" style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
         <TextInput
@@ -138,7 +171,8 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
                         Update
                     </Button>
                     <Button
-                        // onClick={handleQuestionUpdate}
+                        onClick={handleQADelete}
+                        loading={loadingDelete}
                         color="red"
                     >
                         Delete

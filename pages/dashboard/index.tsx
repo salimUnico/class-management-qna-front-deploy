@@ -19,6 +19,7 @@ const Index: FC = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [questionData, setQuestionData] = useState([]);
+    const [loadingDel, setLoadingDel] = useState(false);
 
     const handleGetAllQuestionPaper = async () => {
         setLoading(true);
@@ -50,7 +51,35 @@ const Index: FC = () => {
         }
     };
     const handleQuestionPaperDelete = async (id: string) => {
-        console.log(id)
+        setLoadingDel(true);
+        try {
+            const data = await axios.delete(`/admin/question/paper/${id}`,);
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    message: 'Question paper deleted',
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+                setLoadingDel(false);
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingDel(false);
+        }
     }
     useEffect(() => {
         handleGetAllQuestionPaper();
@@ -66,7 +95,7 @@ const Index: FC = () => {
         marks: ""
     })
     const [loadingAdd, setLoadingAdd] = useState(false);
-    
+
     const handleAddQuestionPaper = async () => {
         setLoadingAdd(true);
         try {

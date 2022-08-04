@@ -144,11 +144,50 @@ const QuestionPaperPage: FC = () => {
         console.log(ansOnOff)
     }, [ansOnOff])
 
-    const handleQuestionUpdate = async () => {
+    const [modalData, setmodalData] = useState({
+        name: "",
+        subject: "",
+        date: "",
+        marks: ""
+    })
+    const [loadingQ, setLoadingQ] = useState(false);
 
-    }
-    const handleAddQA = async () => {
-
+    const handleUpdateQuestionPaper = async () => {
+        setLoadingQ(true);
+        try {
+            // const { question, option1, ans, option2, option3, option4 } = qna;
+            const data = await axios.put(`/admin/question/paper/${router.query.id}`, {
+                subject: modalData?.subject !== '' ? modalData?.subject : questionPaperData?.subject,
+                date: modalData?.date !== '' ? dayjs(modalData?.date).toISOString() : questionPaperData?.date,
+                marks: modalData?.marks !== '' ? modalData?.marks : questionPaperData?.marks
+            });
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Question Answer updated successfully !",
+                });
+                setLoadingQ(false);
+                setTimeout(() => {
+                    // window.location.reload();
+                }, 500)
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingQ(false);
+        }
     }
 
     let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ']
@@ -177,7 +216,7 @@ const QuestionPaperPage: FC = () => {
                                         <View style={styles.ansContainer}>
                                             <View style={styles.mcqView}>{
                                                 itm?.mcq?.map((itm: any, i) => {
-                                                    return <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
+                                                    return itm && <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
                                                 })
                                             }</View>
                                             {
@@ -192,13 +231,6 @@ const QuestionPaperPage: FC = () => {
             </Page>
         </Document>)
     }
-
-    const [modalData, setmodalData] = useState({
-        name: "",
-        subject: "",
-        date: new Date(),
-        marks: ""
-    })
 
 
     return (
@@ -215,41 +247,40 @@ const QuestionPaperPage: FC = () => {
                     <main className={classes.leftSide}>
                         <Card shadow={"xs"} className={classes.questionContainer}>
 
-                            <div className="w-full" style={{ display: 'flex', gap: '1rem' }}>
-                                <TextInput
-                                    label="Name"
-                                    required
-                                    value={modalData.name}
-                                    onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
-                                    id="nameinput"
-                                    style={{ marginBottom: "0.5rem", width: 300 }}
-                                />
+                            <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                 <TextInput
                                     label="Subject"
                                     required
-                                    value={modalData.subject}
+                                    // value={modalData.subject}
+                                    defaultValue={questionPaperData.subject}
                                     onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
                                     id="subjectinput"
-                                    style={{ marginBottom: "0.5rem", width: 300 }}
+                                    style={{ width: 300 }}
                                 />
                                 <TextInput
                                     label="Marks"
                                     required
-                                    value={modalData.marks}
+                                    // value={modalData.marks}
+                                    defaultValue={questionPaperData.marks}
                                     onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
                                     id="marksinput"
-                                    style={{ marginBottom: "0.5rem", width: 300 }}
+                                    style={{ width: 300 }}
                                     type="number"
                                 />
 
                                 <div style={{ display: "flex", flexDirection: "column" }}>
                                     <label>Date</label>
-                                    <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event) => setmodalData({ ...modalData, date: event })} />
+                                    <DatePicker style={{ width: "100%", height: 40 }}
+                                        value={questionPaperData.date}
+                                        onChange={(event: any) => {
+                                            setmodalData({ ...modalData, date: event })
+                                        }}
+                                    />
                                 </div>
 
 
                                 <div style={{ display: "flex", marginTop: "1rem" }}>
-                                    <Button size='sm' style={{ width: "100%" }}>Save</Button>
+                                    <Button size='sm' style={{ width: "100%" }} onClick={handleUpdateQuestionPaper}>Save</Button>
                                 </div>
                             </div>
                         </Card>
@@ -274,8 +305,6 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="preview" pt="xs">
-
-
                     <main className={classes.rightSide}>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>

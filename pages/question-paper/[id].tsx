@@ -149,6 +149,47 @@ const QuestionPaperPage: FC = () => {
     }
 
     let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ']
+
+    const Doc = () => {
+        return (<Document>
+            <Page size="A4" style={styles.page}>
+
+                <View style={styles.section}>
+                    <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
+                    <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
+                    <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
+                </View>
+
+                <View style={styles.main}>
+                    {questionAnswerData?.map((itm: any, i: Number) => {
+                        return (
+                            <View key={itm?._id} style={styles.qna}>
+                                <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
+                                {
+                                    itm?.type === "normal" ? <View style={styles.normal}>
+                                        {
+                                            ansOnOff && <Text>Ans: {itm?.ans}</Text>
+                                        }
+                                    </View> :
+                                        <View style={styles.ansContainer}>
+                                            <View style={styles.mcqView}>{
+                                                itm?.mcq?.map((itm: any, i) => {
+                                                    return <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
+                                                })
+                                            }</View>
+                                            {
+                                                ansOnOff && <Text>Ans: {itm?.ans}</Text>
+                                            }
+                                        </View>
+                                }
+                            </View>
+                        )
+                    })}
+                </View>
+            </Page>
+        </Document>)
+    }
+
     return (
         <div className={classes.container}>
             <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
@@ -162,10 +203,12 @@ const QuestionPaperPage: FC = () => {
                     />
                     <Button onClick={handleQuestionUpdate}>Save</Button>
                 </Card>
-                <AnswerTab />
+                <AnswerTab qpid={router?.query?.id} isUpdate={false} />
                 {
                     questionAnswerData?.map((itm: any, i: Number) => {
                         return <AnswerTab
+                            id={itm?._id}
+                            qpid={router?.query?.id}
                             question={itm?.question}
                             option1={itm?.mcq[0]}
                             option2={itm?.mcq[1]}
@@ -179,43 +222,15 @@ const QuestionPaperPage: FC = () => {
             </main>
             <main className={classes.rightSide}>
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
-                    <Document>
-                        <Page size="A4" style={styles.page}>
-
-                            <View style={styles.section}>
-                                <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
-                                <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
-                                <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
-                            </View>
-
-                            <View style={styles.main}>
-                                {questionAnswerData?.map((itm: any, i: Number) => {
-                                    return (
-                                        <View key={itm?._id} style={styles.qna}>
-                                            <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
-                                            {
-                                                ansOnOff && (
-                                                    itm?.type === "normal" ? <View style={styles.normal}>
-                                                        <Text>Ans: {itm?.ans}</Text>
-                                                    </View> :
-                                                        <View style={styles.ansContainer}>
-                                                            <View style={styles.mcqView}>{
-                                                                itm?.mcq?.map((itm: any, i) => {
-                                                                    return <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
-                                                                })
-                                                            }</View>
-                                                            <Text>Ans: {itm?.ans}</Text>
-                                                        </View>
-
-                                                )
-                                            }
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </Page>
-                    </Document>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
+                        <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
+                        {
+                            isClient && <PDFDownloadLink document={<Doc />} fileName="question.pdf">
+                                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
+                            </PDFDownloadLink>
+                        }
+                    </div>
+                    <Doc />
                 </div>
             </main>
         </div>

@@ -27,7 +27,8 @@ export default createStyles((theme) => ({
     leftSide: {
         display: 'flex',
         gap: '1rem',
-        padding: '2rem'
+        padding: '2rem',
+        flexWrap: 'wrap'
     },
     rightSide: {
         // display: 'flex',

@@ -1,12 +1,96 @@
 import { useState } from 'react';
 import { Button, Switch, Card, TextInput, Title, } from '@mantine/core';
 
-const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate }) => {
+import { showNotification } from '@mantine/notifications';
+import axios from '../helper/axios';
+
+const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate, id, qpid }: any) => {
     const [qna, setQna] = useState({
         question: '',
         option1: '', option3: '', option2: '', option4: '', ans: '',
     })
-    const [loading, setLoading] = useState(false);
+    const [loadingAdd, setLoadingAdd] = useState(false);
+    const [loadingUpdate, setLoadingUpdate] = useState(false);
+
+    const handleQAAdd = async () => {
+        setLoadingAdd(true);
+        try {
+            const { question, option1, ans, option2, option3, option4 } = qna;
+            const data = await axios.post(`/admin/question/ans`, {
+                qpid: qpid,
+                question: question,
+                ans: ans,
+                type: "mcq",
+                mcq: [option1, option2, option3, option4]
+            });
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Question Answer added !",
+                });
+                setLoadingAdd(false);
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingAdd(false);
+        }
+    }
+
+    const handleQAUpdate = async () => {
+        setLoadingUpdate(true);
+        try {
+            // const { question, option1, ans, option2, option3, option4 } = qna;
+            const data = await axios.put(`/admin/question/ans/${id}`, {
+                question: qna.question !== '' ? qna.question : question,
+                ans: qna.ans !== '' ? qna.ans : ans,
+                type: "mcq",
+                mcq: [
+                    qna.option1 !== '' ? qna.option1 : option1,
+                    qna.option2 !== '' ? qna.option2 : option2,
+                    qna.option3 !== '' ? qna.option3 : option3,
+                    qna.option4 !== '' ? qna.option4 : option4]
+            });
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Question Answer updated successfully !",
+                });
+                setLoadingUpdate(false);
+                window.location.reload();
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingUpdate(false);
+        }
+    }
+
 
     return (<Card shadow="xs" style={{ display: 'flex', flexDirection: 'column', gap: "1rem" }}>
         <TextInput
@@ -49,7 +133,8 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
             isUpdate ?
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <Button
-                    // onClick={handleQuestionUpdate}
+                        onClick={handleQAUpdate}
+                        loading={loadingAdd}
                     >
                         Update
                     </Button>
@@ -62,7 +147,8 @@ const AnswerTab = ({ question, option1, option3, option2, option4, ans, isUpdate
                 </div>
                 :
                 <Button
-                // onClick={handleQuestionUpdate}
+                    onClick={handleQAAdd}
+                    loading={loadingAdd}
                 >
                     Add new
                 </Button>

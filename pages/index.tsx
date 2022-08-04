@@ -30,7 +30,7 @@ export default function HomePage() {
           localStorage.setItem('user', JSON.stringify(data?.data?.msg));
           localStorage.setItem('token', data?.data?.jwt?.token);
           router.push('/dashboard')
-          window.location.reload();
+          // window.location.reload();
         }, 1000);
       }
     } catch (error: any) {

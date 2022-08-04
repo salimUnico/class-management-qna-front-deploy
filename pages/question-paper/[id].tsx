@@ -204,10 +204,17 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
-            
-            <main className={classes.leftSide}>
-                <Card shadow={"xs"} className={classes.questionContainer}>
-                    {/* <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />
+
+            <Tabs defaultValue="editor" id='tabid' style={{ width: 500, margin: "0 auto" }}>
+                <Tabs.List>
+                    <Tabs.Tab value="editor" >Editor</Tabs.Tab>
+                    <Tabs.Tab value="preview" >Preview</Tabs.Tab>
+                </Tabs.List>
+
+                <Tabs.Panel value="editor" pt="xs">
+                    <main className={classes.leftSide}>
+                        <Card shadow={"xs"} className={classes.questionContainer}>
+                            {/* <TextInput placeholder={questionPaperData.subject} label="Question Paper Subject" style={{ width: '400px' }} id="subject" />
                     <TextInput placeholder={questionPaperData.marks} label="Total Marks" style={{ width: '400px' }} id="makrs" />
                     <DatePicker
                         className="datepicker"
@@ -216,74 +223,83 @@ const QuestionPaperPage: FC = () => {
                     <Button onClick={handleQuestionUpdate}>Save</Button> */}
 
 
-                    <div className="w-full" style={{ width: 400 }}>
-                        <TextInput
-                            label="Name"
-                            required
-                            value={modalData.name}
-                            onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
-                            id="nameinput"
-                            style={{ marginBottom: "0.5rem" }}
-                        />
-                        <TextInput
-                            label="Subject"
-                            required
-                            value={modalData.subject}
-                            onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
-                            id="subjectinput"
-                            style={{ marginBottom: "0.5rem" }}
-                        />
-                        <TextInput
-                            label="Marks"
-                            required
-                            value={modalData.marks}
-                            onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
-                            id="marksinput"
-                            style={{ marginBottom: "0.5rem" }}
-                            type="number"
-                        />
+                            <div className="w-full" style={{ width: 400 }}>
+                                <TextInput
+                                    label="Name"
+                                    required
+                                    value={modalData.name}
+                                    onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
+                                    id="nameinput"
+                                    style={{ marginBottom: "0.5rem" }}
+                                />
+                                <TextInput
+                                    label="Subject"
+                                    required
+                                    value={modalData.subject}
+                                    onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
+                                    id="subjectinput"
+                                    style={{ marginBottom: "0.5rem" }}
+                                />
+                                <TextInput
+                                    label="Marks"
+                                    required
+                                    value={modalData.marks}
+                                    onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
+                                    id="marksinput"
+                                    style={{ marginBottom: "0.5rem" }}
+                                    type="number"
+                                />
 
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                            <label>Date</label>
-                            <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event) => setmodalData({ ...modalData, date: event })} />
-                        </div>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <label>Date</label>
+                                    <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event) => setmodalData({ ...modalData, date: event })} />
+                                </div>
 
 
-                        <div style={{ display: "flex", marginTop: "1rem" }}>
-                            <Button size='sm' style={{ width: "100%"}}>Save</Button>
-                        </div>
-                    </div>
-                </Card>
-                <AnswerTab qpid={router?.query?.id} isUpdate={false} />
-                {
-                    questionAnswerData?.map((itm: any, i: Number) => {
-                        return <AnswerTab
-                            id={itm?._id}
-                            qpid={router?.query?.id}
-                            question={itm?.question}
-                            option1={itm?.mcq[0]}
-                            option2={itm?.mcq[1]}
-                            option3={itm?.mcq[2]}
-                            option4={itm?.mcq[3]}
-                            ans={itm?.ans}
-                            isUpdate={true}
-                        />
-                    })
-                }
-            </main>
-            <main className={classes.rightSide}>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
+                                <div style={{ display: "flex", marginTop: "1rem" }}>
+                                    <Button size='sm' style={{ width: "100%" }}>Save</Button>
+                                </div>
+                            </div>
+                        </Card>
+                        <AnswerTab qpid={router?.query?.id} isUpdate={false} />
                         {
-                            isClient && <PDFDownloadLink document={<Doc />} fileName="question.pdf">
-                                {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
-                            </PDFDownloadLink>
+                            questionAnswerData?.map((itm: any, i: Number) => {
+                                return <AnswerTab
+                                    id={itm?._id}
+                                    qpid={router?.query?.id}
+                                    question={itm?.question}
+                                    option1={itm?.mcq[0]}
+                                    option2={itm?.mcq[1]}
+                                    option3={itm?.mcq[2]}
+                                    option4={itm?.mcq[3]}
+                                    ans={itm?.ans}
+                                    isUpdate={true}
+                                />
+                            })
                         }
-                    </div>
-                    <Doc />
-                </div>
-            </main>
+                    </main>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="preview" pt="xs">
+
+
+                    <main className={classes.rightSide}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                            <div style={{ display: 'flex', gap: '1rem' }}>
+                                <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
+                                {
+                                    isClient && <PDFDownloadLink document={<Doc />} fileName="question.pdf">
+                                        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
+                                    </PDFDownloadLink>
+                                }
+                            </div>
+                            <Doc />
+                        </div>
+                    </main>
+                </Tabs.Panel>
+            </Tabs>
+
+
         </div>
     )
 }

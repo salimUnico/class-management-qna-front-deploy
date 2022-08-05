@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         margin: 10,
         padding: 10,
         width: '770px',
-        boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
+        // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     },
     section: {
         display: 'flex',
@@ -170,7 +170,7 @@ const QuestionPaperPage: FC = () => {
                 });
                 setLoadingQ(false);
                 setTimeout(() => {
-                    // window.location.reload();
+                    window.location.reload();
                 }, 500)
             }
         } catch (error: any) {
@@ -196,7 +196,9 @@ const QuestionPaperPage: FC = () => {
     const Doc = () => {
         return (<Document>
             <Page size="A4" style={styles.page} >
-
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={50} width={130} />
+            </div>
                 <View style={styles.section}>
                     <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
                     <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
@@ -310,11 +312,11 @@ const QuestionPaperPage: FC = () => {
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
-                                {
+                                {/* {
                                     isClient && <PDFDownloadLink document={<Doc />} fileName="question.pdf">
                                         {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Question Paper')}
                                     </PDFDownloadLink>
-                                }
+                                } */}
                                 <ReactToPrint
                                     // onBeforePrint={() => { styles.page.boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}
                                     trigger={() => <Button className="g-font">Download Question Paper</Button>}

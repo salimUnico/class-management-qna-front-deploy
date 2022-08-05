@@ -45,8 +45,38 @@ const Notes: FC = () => {
             setLoading(false);
         }
     };
+    const [loadingDel, setLoadingDel] = useState(false);
+
     const handleQuestionPaperDelete = async (id: string) => {
-        console.log(id)
+        setLoadingDel(true);
+        try {
+            const data = await axios.delete(`/admin/notes/${id}`,);
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    message: 'Notes deleted',
+                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+                setLoadingDel(false);
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingDel(false);
+        }
     }
     useEffect(() => {
         handleGetAllQuestionPaper();

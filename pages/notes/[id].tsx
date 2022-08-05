@@ -1,92 +1,33 @@
-import { FC, useEffect, useState } from 'react';
-import { Button, Switch, Card, TextInput, Title, Tabs, Popover, Textarea, FileInput } from '@mantine/core';
-import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react-pdf/renderer';
-// import dynamic from 'next/dynamic';
-// const PDFDownloadLink = dynamic(() => import('@react-pdf/renderer'), {
-//     ssr: false
-// });
-// import DatePicker from "react-datepicker";
+import { FC, useEffect, useState, useRef } from 'react';
+import { Button, Switch, Card, TextInput, Title, Tabs, Popover, Textarea, FileInput, Text } from '@mantine/core';
 import useStyles from '../../styles/question-paper.style';
 
 import { showNotification } from '@mantine/notifications';
 import axios from '../../helper/axios';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/router';
-
-import AnswerTab from '../../components/AnswerTabs';
-
-
-import DatePicker from "react-multi-date-picker"
 import { PlusIcon } from '@modulz/radix-icons';
+import ReactToPrint from 'react-to-print';
 
-const styles = StyleSheet.create({
-    page: {
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#fff',
-        margin: 10,
-        padding: 10,
-        width: '700px',
-        boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
-    },
-    section: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 20,
-        flexGrow: 1
-    },
-    topTitle: {
-        fontWeight: 700,
-    },
-    main: {
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    qna: {
-        display: 'flex',
-        flexDirection: 'column',
-        marginBottom: 15
-    },
-    normal: {
+import UploadImage from '../../helper/imageUpload';
 
-    },
-    ques: {
-        fontWeight: 500
-    },
-    ans: {
-
-    },
-    mcqView: {
-        display: 'flex',
-        gap: '2rem',
-        margin: 5,
-        flexWrap: 'wrap'
-    },
-    ansContainer: {
-        display: 'flex',
-        flexDirection: 'column'
-    }
-});
 
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
     const router = useRouter();
-
+    const ref = useRef();
     const [ansOnOff, setAnsOnOff] = useState(false);
 
     const [loading, setLoading] = useState(false);
-    const [questionPaperData, setQuestionPaperData] = useState<any>({});
-    const [questionAnswerData, setQuestionAnswerData] = useState([]);
+    const [notesData, setNotesData] = useState<any>({});
 
-    const [isClient, setIsClient] = useState(false)
-
-    const handleGetQuestionPaperData = async (id: any) => {
+    const handleGetNotes = async (id: any) => {
         setLoading(true);
         try {
-            const data = await axios.get(`/admin/question/paper/${id}`,);
+            const data = await axios.get(`/admin/notes/single/${id}`,);
             if (data?.data?.success) {
-                setQuestionPaperData(data?.data?.data)
+                setNotesData(data?.data?.data)
+                seteditorOption(data?.data?.data?.json)
                 setLoading(false);
             }
         } catch (error: any) {
@@ -107,91 +48,85 @@ const QuestionPaperPage: FC = () => {
         }
     }
 
-    const handleGetAnswerPaperData = async (id: any) => {
-        setLoading(true);
-        try {
-            const data = await axios.get(`/admin/question/ans/paper/${id}`,);
-            if (data?.data?.success) {
-                setQuestionAnswerData(data?.data?.data)
-                setLoading(false);
-            }
-        } catch (error: any) {
-            if (error?.response?.data) {
-                showNotification({
-                    title: 'Error',
-                    color: 'red',
-                    message: error?.response?.data?.data ?? 'Someting went wrong',
-                });
-            } else {
-                showNotification({
-                    title: 'Error',
-                    color: 'red',
-                    message: error?.message ?? 'Something went wrong ',
-                });
-            }
-            setLoading(false);
-        }
-    }
 
     useEffect(() => {
         if (router.isReady) {
-            handleGetAnswerPaperData(router?.query?.id);
-            handleGetQuestionPaperData(router?.query?.id)
-            setIsClient(true)
+            handleGetNotes(router?.query?.id)
         }
     }, [router.isReady])
 
     useEffect(() => {
-        console.log(ansOnOff)
+        // console.log(ansOnOff)
     }, [ansOnOff])
+    const [loadingQ, setLoadingQ] = useState(false);
 
-    const handleQuestionUpdate = async () => {
-
-    }
-    const handleAddQA = async () => {
-
+    const handleUpdateNotes = async () => {
+        setLoadingQ(true);
+        try {
+            // const { question, option1, ans, option2, option3, option4 } = qna;
+            const data = await axios.put(`/admin/notes/${router.query.id}`, { json: editorOption });
+            if (data?.data?.success) {
+                showNotification({
+                    title: 'Success',
+                    color: 'blue',
+                    message: "Notes published successfully !",
+                });
+                setLoadingQ(false);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500)
+            }
+        } catch (error: any) {
+            if (error?.response?.data) {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                });
+            } else {
+                showNotification({
+                    title: 'Error',
+                    color: 'red',
+                    message: error?.message ?? 'Something went wrong ',
+                });
+            }
+            setLoadingQ(false);
+        }
     }
 
     let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ']
 
     const Doc = () => {
-        return (<Document>
-            <Page size="A4" style={styles.page}>
-
-                <View style={styles.section}>
-                    <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
-                    <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
-                    <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
-                </View>
-
-                <View style={styles.main}>
-                    {questionAnswerData?.map((itm: any, i: Number) => {
-                        return (
-                            <View key={itm?._id} style={styles.qna}>
-                                <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
-                                {
-                                    itm?.type === "normal" ? <View style={styles.normal}>
-                                        {
-                                            ansOnOff && <Text>Ans: {itm?.ans}</Text>
-                                        }
-                                    </View> :
-                                        <View style={styles.ansContainer}>
-                                            <View style={styles.mcqView}>{
-                                                itm?.mcq?.map((itm: any, i) => {
-                                                    return <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
-                                                })
-                                            }</View>
-                                            {
-                                                ansOnOff && <Text>Ans: {itm?.ans}</Text>
-                                            }
-                                        </View>
-                                }
-                            </View>
-                        )
-                    })}
-                </View>
-            </Page>
-        </Document>)
+        return (<div style={{
+            // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+            width: '770px',
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column'
+        }} >
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={50} width={130} />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <h1 style={{ margin: 0, fontSize: 25 }}>Topic: {notesData?.name}</h1>
+            </div>
+            {
+                editorOption.map((item: any, i) => {
+                    if (item?.type === 'title') {
+                        return <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold' }}>{item?.value}</h1>
+                    }
+                    if (item?.type === 'subtitle') {
+                        return <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: '400' }}>{item?.value}</h3>
+                    }
+                    if (item?.type === 'about') {
+                        return <p key={item?.id} style={{ fontSize: '16px' }}>{item?.value}</p>
+                    }
+                    if (item?.type === 'addimg') {
+                        return <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
+                    }
+                })
+            }
+        </div >)
     }
 
     const [modalData, setmodalData] = useState({
@@ -204,12 +139,13 @@ const QuestionPaperPage: FC = () => {
 
     const [editorOption, seteditorOption] = useState([])
 
-    const addOption = (type) => {
+    const addOption = (type, data) => {
         seteditorOption((old) => {
             return [...old, {
                 id: old.length + 1,
                 value: "",
-                type
+                type,
+                ...data
             }]
         })
     }
@@ -231,7 +167,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234 }}>
-                <Title className={classes.title}><Text>{questionPaperData?.name}</Text></Title>
+                <Title className={classes.title}><Text>{notesData?.name}</Text></Title>
 
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
@@ -249,7 +185,7 @@ const QuestionPaperPage: FC = () => {
                                 addOption("about")
                             }} className={`option`}>Create paragrah</span>
                             <span onClick={() => {
-                                addOption("addimg")
+                                addOption("addimg", { h: 10, w: 10 })
                             }} className={`option`}>Add Image</span>
                         </div>
                     </Popover.Dropdown>
@@ -268,7 +204,7 @@ const QuestionPaperPage: FC = () => {
 
             </div>
 
-            <Tabs defaultValue="editor" id='tabid' style={{ width: 500, margin: "0 auto" }}>
+            <Tabs defaultValue="editor" id='tabid' style={{ width: 1000, margin: "0 auto" }}>
                 <Tabs.List>
                     <Tabs.Tab value="editor" >Editor</Tabs.Tab>
                     <Tabs.Tab value="preview" >Preview</Tabs.Tab>
@@ -276,13 +212,16 @@ const QuestionPaperPage: FC = () => {
 
                 <Tabs.Panel value="editor" pt="xs">
                     <main>
+                        {/* {
+                            !loading ? notesData?.map((itm: any, i) => {
+                                return 
+                            }) : ''
+                        } */}
                         {editorOption.length > 0 && <Card shadow={"xs"} className={classes.questionContainer}>
-
-
-                            <div className="w-full" style={{ width: 400 }}>
+                            <div className="w-full" style={{ width: 900 }}>
                                 {
-                                    editorOption.map((item, index) => {
-                                        return <div >
+                                    editorOption.map((item: any, index) => {
+                                        return <div>
                                             {
                                                 item.type == "title" ? <TextInput
                                                     label="Title"
@@ -309,17 +248,32 @@ const QuestionPaperPage: FC = () => {
                                                             id="aboutinput"
                                                             style={{ marginBottom: "0.5rem" }}
                                                         />
-                                                            : item.type == "addimg" && <FileInput value={item.value} onChange={(e) => changeValue({ ...item, value: e })} label="Add Image" placeholder="Click Here" accept="image/png,image/jpeg" />
+                                                            : item.type == "addimg" &&
+                                                            <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center', gap: '1rem', borderRadius: '5px' }}>
+                                                                <div>
+                                                                    <img src={item?.value} height={100} width={140} style={{ objectFit: 'cover' }} />
+                                                                </div>
+                                                                <div>
+                                                                    <FileInput value={item.value} onChange={async (e) => {
+                                                                        let refName = `notes_image/${Date.now()}_notes`;
+                                                                        const res = await UploadImage(e, refName);
+                                                                        // console.log(res)
+                                                                        changeValue({ ...item, value: res })
+                                                                    }} label={`Add Image`} placeholder="Click Here" accept="image/png,image/jpeg" />
+                                                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                                                        <TextInput label="height" id="height" value={item?.h} onChange={(e) => changeValue({ ...item, h: e.currentTarget.value })} />
+                                                                        <TextInput label="width" id="width" value={item?.w} onChange={(e) => changeValue({ ...item, w: e.currentTarget.value })} />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                             }
-                                            <Button color="red" onClick={() => seteditorOption((old) => old.filter((data) => data.id != item.id))}>Delete</Button>
+                                            <Button color="red" onClick={() => seteditorOption((old) => old.filter((data: any) => data.id != item.id))}>Delete</Button>
                                         </div>
                                     })
                                 }
 
-
-
                                 <div style={{ display: "flex", marginTop: "1rem" }}>
-                                    <Button size='sm' style={{ width: "100%" }}>Save</Button>
+                                    <Button size='sm' style={{ width: "100%" }} onClick={handleUpdateNotes} loading={loadingQ}>Save</Button>
                                 </div>
                             </div>
                         </Card>}
@@ -329,25 +283,26 @@ const QuestionPaperPage: FC = () => {
 
                 <Tabs.Panel value="preview" pt="xs">
 
-
                     <main className={classes.rightSide}>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', gap: '1rem' }}>
-                                {/* <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" /> */}
-                                {
-                                    isClient && <PDFDownloadLink document={<Doc />} fileName="notes.pdf">
-                                        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download Notes ')}
-                                    </PDFDownloadLink>
-                                }
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
+                            <div style={{ display: 'flex', gap: '1rem' }}><div>
+                                <ReactToPrint
+                                    // onBeforePrint={() => { styles.page.boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}
+                                    trigger={() => <Button className="g-font">Download Notes</Button>}
+                                    content={() => ref.current}
+                                />
                             </div>
-                            <Doc />
+                            </div>
+                            <div ref={ref}>
+                                <Doc />
+                            </div>
                         </div>
                     </main>
                 </Tabs.Panel>
-            </Tabs>
+            </Tabs >
 
 
-        </div>
+        </div >
     )
 }
 

@@ -100,12 +100,12 @@ const QuestionPaperPage: FC = () => {
         return (<div style={{
             // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
             width: '770px',
-            padding: '1rem',
+            padding: '3rem',
             display: 'flex',
             flexDirection: 'column'
         }} >
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={50} width={130} />
+                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <h1 style={{ margin: 0, fontSize: 25 }}>Topic: {notesData?.name}</h1>
@@ -142,7 +142,7 @@ const QuestionPaperPage: FC = () => {
     const addOption = (type, data) => {
         seteditorOption((old) => {
             return [...old, {
-                id: old.length + 1,
+                id: old[old.length - 1].id + 1,
                 value: "",
                 type,
                 ...data
@@ -166,9 +166,8 @@ const QuestionPaperPage: FC = () => {
 
     return (
         <div className={classes.container}>
-            <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234 }}>
+            <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234 ,background:'#fff'}}>
                 <Title className={classes.title}><Text>{notesData?.name}</Text></Title>
-
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
                         <Button leftIcon={<PlusIcon />} style={{ marginLeft: "2rem", marginTop: "1rem" }} >Add</Button>
@@ -185,7 +184,7 @@ const QuestionPaperPage: FC = () => {
                                 addOption("about")
                             }} className={`option`}>Create paragrah</span>
                             <span onClick={() => {
-                                addOption("addimg", { h: 10, w: 10 })
+                                addOption("addimg", { h: 210, w: 510 })
                             }} className={`option`}>Add Image</span>
                         </div>
                     </Popover.Dropdown>
@@ -241,7 +240,7 @@ const QuestionPaperPage: FC = () => {
                                                         style={{ marginBottom: "0.5rem" }}
                                                     />
                                                         : item.type == "about" ? <Textarea
-                                                            label="About"
+                                                            label="Paragraph"
                                                             required
                                                             value={item.value}
                                                             onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}

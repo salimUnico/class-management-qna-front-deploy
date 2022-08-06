@@ -8,7 +8,7 @@ import useStyles from '../../styles/dashboard.style';
 import { showNotification } from '@mantine/notifications';
 import axios from '../../helper/axios';
 import dayjs from 'dayjs';
-
+import useAuth from '../../helper/useAuth';
 
 const Notes: FC = () => {
     const theme = useMantineTheme();
@@ -17,6 +17,7 @@ const Notes: FC = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [questionData, setQuestionData] = useState([]);
+    const isLoggedIn = useAuth();
 
     const [note, setNote] = useState({ name: '' });
 
@@ -167,6 +168,7 @@ const Notes: FC = () => {
             </main>
         </div >
     );
+
 };
 
 export default Notes;

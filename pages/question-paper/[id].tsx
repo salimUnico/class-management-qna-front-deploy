@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from 'react';
-import { Button, Switch, Card, TextInput, Title, Tabs } from '@mantine/core';
+import { Button, Switch, Card, TextInput, Title, Tabs, Popover } from '@mantine/core';
 import { Document, Page, Text, View, StyleSheet, PDFDownloadLink, } from '@react-pdf/renderer';
 // import dynamic from 'next/dynamic';
 // const PDFDownloadLink = dynamic(() => import('@react-pdf/renderer'), {
@@ -16,6 +16,7 @@ import { useRouter } from 'next/router';
 
 import AnswerTab from '../../components/AnswerTabs';
 
+import useAuth from '../../helper/useAuth';
 
 import DatePicker from "react-multi-date-picker"
 
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#fff',
         margin: 10,
-        padding: 10,
+        padding: 30,
         width: '770px',
         // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     },
@@ -74,6 +75,7 @@ const QuestionPaperPage: FC = () => {
     const router = useRouter();
     const ref = useRef();
     const [ansOnOff, setAnsOnOff] = useState(false);
+    const isLoggedIn = useAuth();
 
     const [loading, setLoading] = useState(false);
     const [questionPaperData, setQuestionPaperData] = useState<any>({});
@@ -141,10 +143,6 @@ const QuestionPaperPage: FC = () => {
         }
     }, [router.isReady])
 
-    useEffect(() => {
-        console.log(ansOnOff)
-    }, [ansOnOff])
-
     const [modalData, setmodalData] = useState({
         name: "",
         subject: "",
@@ -191,14 +189,14 @@ const QuestionPaperPage: FC = () => {
         }
     }
 
-    let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ']
+    let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ', 'e.', 'f.', 'g.', 'h.', 'i.']
 
     const Doc = () => {
         return (<Document>
             <Page size="A4" style={styles.page} >
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={50} width={130} />
-            </div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
+                </div>
                 <View style={styles.section}>
                     <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
                     <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
@@ -238,7 +236,17 @@ const QuestionPaperPage: FC = () => {
 
     return (
         <div className={classes.container}>
-            <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
+                <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
+                <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" style={{ marginTop: '1rem' }}>
+                    <Popover.Target>
+                        <Button>Add Question</Button>
+                    </Popover.Target>
+                    <Popover.Dropdown>
+                        <AnswerTab qpid={router?.query?.id} isUpdate={false} />
+                    </Popover.Dropdown>
+                </Popover>
+            </div>
 
             <Tabs defaultValue="editor" id='tabid' style={{ width: 900, margin: "0 auto" }}>
                 <Tabs.List>
@@ -249,7 +257,6 @@ const QuestionPaperPage: FC = () => {
                 <Tabs.Panel value="editor" pt="xs" >
                     <main className={classes.leftSide}>
                         <Card shadow={"xs"} className={classes.questionContainer}>
-
                             <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                 <TextInput
                                     label="Subject"
@@ -288,7 +295,6 @@ const QuestionPaperPage: FC = () => {
                             </div>
                         </Card>
 
-                        <AnswerTab qpid={router?.query?.id} isUpdate={false} />
                         {
                             questionAnswerData?.map((itm: any, i: Number) => {
                                 return <AnswerTab
@@ -299,6 +305,10 @@ const QuestionPaperPage: FC = () => {
                                     option2={itm?.mcq[1]}
                                     option3={itm?.mcq[2]}
                                     option4={itm?.mcq[3]}
+                                    option5={itm?.mcq[4]}
+                                    option6={itm?.mcq[5]}
+                                    option7={itm?.mcq[6]}
+                                    option8={itm?.mcq[7]}
                                     ans={itm?.ans}
                                     isUpdate={true}
                                 />
@@ -332,6 +342,7 @@ const QuestionPaperPage: FC = () => {
             </Tabs>
         </div>
     )
+
 }
 
 export default QuestionPaperPage;

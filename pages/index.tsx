@@ -79,9 +79,9 @@ export default function HomePage() {
               icon={<LockClosedIcon />}
 
             />
-            <Text inherit color="blue" className={classes.forgot} component="span">
+            {/* <Text inherit color="blue" className={classes.forgot} component="span">
               Forgot Password ?
-            </Text>
+            </Text> */}
             <Button loading={loading} onClick={handleSign}>
               Sign in
             </Button>

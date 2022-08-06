@@ -17,6 +17,7 @@ import { useRouter } from 'next/router';
 import AnswerTab from '../../components/AnswerTabs';
 
 import useAuth from '../../helper/useAuth';
+import { HomeIcon } from '@modulz/radix-icons';
 
 import DatePicker from "react-multi-date-picker"
 
@@ -236,8 +237,9 @@ const QuestionPaperPage: FC = () => {
 
     return (
         <div className={classes.container}>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
-                <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff',paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
+                <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/dashboard')} />
+                <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
                         <Popover.Target>

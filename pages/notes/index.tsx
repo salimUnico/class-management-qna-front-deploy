@@ -117,6 +117,9 @@ const Notes: FC = () => {
                     <Title className={classes.title}><Text style={{ color: router.pathname.includes('notes') ? 'blue' : 'black' }}
                         onClick={() => router.push('/notes')}
                     >Notes</Text></Title>
+                    <Title className={classes.title}><Text style={{ color: router.pathname.includes('user-management') ? 'blue' : 'black' }}
+                        onClick={() => router.push('/user-management')}
+                    >User-Management</Text></Title>
                 </div>
                 <Popover width={300} position="bottom" withArrow shadow="md" id="popverddnotes">
                     <Popover.Target>

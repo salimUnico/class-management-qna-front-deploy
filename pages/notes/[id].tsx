@@ -10,6 +10,7 @@ import { PlusIcon } from '@modulz/radix-icons';
 import ReactToPrint from 'react-to-print';
 
 import UploadImage from '../../helper/imageUpload';
+import { HomeIcon } from '@modulz/radix-icons';
 
 
 const QuestionPaperPage: FC = () => {
@@ -167,6 +168,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234, background: '#fff' }}>
+                <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/notes')} />
                 <Title className={classes.title}><Text>{notesData?.name}</Text></Title>
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>

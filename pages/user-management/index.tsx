@@ -24,12 +24,12 @@ const Index: FC = () => {
     const handleGetAllQuestionPaper = async () => {
         setLoading(true);
         try {
-            const data = await axios.get('/admin/question/paper',);
+            const data = await axios.get('/admin/user',);
             if (data?.data?.success) {
-                // showNotification({
-                //     title: 'Success',
-                //     message: 'All Question paper loaded',
-                // });
+                showNotification({
+                    title: 'Success',
+                    message: 'All Question paper loaded',
+                });
                 setQuestionData(data?.data?.data)
                 setLoading(false);
             }
@@ -53,7 +53,7 @@ const Index: FC = () => {
     const handleQuestionPaperDelete = async (id: string) => {
         setLoadingDel(true);
         try {
-            const data = await axios.delete(`/admin/question/paper/${id}`,);
+            const data = await axios.delete(`/admin/user/${id}`,);
             if (data?.data?.success) {
                 showNotification({
                     title: 'Success',
@@ -90,24 +90,24 @@ const Index: FC = () => {
     const [addQuestionPaperModal, setaddQuestionPaperModal] = useState<boolean>(false)
     const [modalData, setmodalData] = useState({
         name: "",
-        subject: "",
-        date: new Date(),
-        marks: ""
+        email: "",
+        role: "admin",
+        password: "",
+        telephone: "",
+        gender: "male"
     })
     const [loadingAdd, setLoadingAdd] = useState(false);
 
     const handleAddQuestionPaper = async () => {
         setLoadingAdd(true);
         try {
-            const { date, marks, name, subject } = modalData;
-            const data = await axios.post(`/admin/question/paper`, {
-                name, marks, subject, date: dayjs(date).toISOString()
-            });
+
+            const data = await axios.post(`/admin/user/new`, modalData);
             if (data?.data?.success) {
                 showNotification({
                     title: 'Success',
                     color: 'blue',
-                    message: "Question paper added !",
+                    message: "New user added",
                 });
                 setLoadingAdd(false);
                 window.location.reload();
@@ -144,7 +144,8 @@ const Index: FC = () => {
                         onClick={() => router.push('/user-management')}
                     >User-Management</Text></Title>
                 </div>
-                <Button onClick={() => setaddQuestionPaperModal(true)}>Create Question Paper</Button>
+                <Button onClick={() => setaddQuestionPaperModal(true)}>Create User</Button>
+
             </Card>
 
             <Modal
@@ -162,39 +163,43 @@ const Index: FC = () => {
                 id="addQuestionPaperModal"
             >
                 <div className="w-full">
-                    <h3 className="text-xl text-gray-900  mb-5" style={{ marginTop: "-0.3rem" }}>Create Question Paper</h3>
+                    <h3 className="text-xl text-gray-900  mb-5" style={{ marginTop: "-0.3rem" }}>Create New User</h3>
 
                     <TextInput
                         label="Name"
                         required
                         value={modalData.name}
                         onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
-                        id="nameinput"
+                        id="nameisdnput"
                         style={{ marginBottom: "0.5rem" }}
                     />
                     <TextInput
-                        label="Subject"
+                        label="Email"
                         required
-                        value={modalData.subject}
-                        onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
-                        id="subjectinput"
+                        value={modalData.email}
+                        onChange={(event) => setmodalData({ ...modalData, email: event.currentTarget.value })}
+                        id="subjecsdtinput"
                         style={{ marginBottom: "0.5rem" }}
                     />
                     <TextInput
-                        label="Marks"
+                        label="Telephone"
                         required
-                        value={modalData.marks}
-                        onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
-                        id="marksinput"
+                        value={modalData.telephone}
+                        onChange={(event) => setmodalData({ ...modalData, telephone: event.currentTarget.value })}
+                        id="marksisdnput"
                         style={{ marginBottom: "0.5rem" }}
                         type="number"
                     />
 
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                        <label>Date</label>
-                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event: any) => setmodalData({ ...modalData, date: event })} />
-                    </div>
-
+                    <TextInput
+                        label="Password"
+                        required
+                        value={modalData.password}
+                        onChange={(event) => setmodalData({ ...modalData, password: event.currentTarget.value })}
+                        id="markspinput"
+                        style={{ marginBottom: "0.5rem" }}
+                    // type="number"
+                    />
 
                     <div style={{ display: "flex", marginTop: "1rem" }}>
                         <Button size='sm' onClick={handleAddQuestionPaper}>Save</Button>
@@ -205,17 +210,17 @@ const Index: FC = () => {
 
 
             <main>
-                <Title className={classes.title} ><Text style={{ padding: '1rem' }}>All Question Papers</Text></Title>
+                <Title className={classes.title} ><Text style={{ padding: '1rem' }}>All users</Text></Title>
                 <div className={classes.main}>
                     {
                         !loading ?
                             <Table>
                                 <thead>
                                     <tr>
-                                        <th>Question paper name</th>
-                                        <th>Subject</th>
-                                        <th>Date</th>
-                                        <th>Marks</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Telephone</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -225,11 +230,11 @@ const Index: FC = () => {
                                             return (
                                                 <tr key={itm._id}>
                                                     <td>{itm?.name}</td>
-                                                    <td>{itm?.subject}</td>
-                                                    <td>{dayjs(itm?.date).format('DD-MM-YYYY')}</td>
-                                                    <td>{itm?.marks}</td>
+                                                    <td>{itm?.email}</td>
+                                                    <td>{itm?.telephone}</td>
+                                                    <td>{itm?.role}</td>
                                                     <td>
-                                                        <Button onClick={() => router.push(`/question-paper/${itm?._id}`)} variant="light">View</Button>
+                                                        {/* <Button onClick={() => router.push(`/question-paper/${itm?._id}`)} variant="light">View</Button> */}
                                                         {" "}
                                                         <Button onClick={() => handleQuestionPaperDelete(itm?._id)} color="red" variant='outline'>Delete</Button>
                                                     </td>

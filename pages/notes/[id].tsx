@@ -116,7 +116,7 @@ const QuestionPaperPage: FC = () => {
                         return <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold' }}>{item?.value}</h1>
                     }
                     if (item?.type === 'subtitle') {
-                        return <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: '400' }}>{item?.value}</h3>
+                        return <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3>
                     }
                     if (item?.type === 'about') {
                         return <p key={item?.id} style={{ fontSize: '16px' }}>{item?.value}</p>
@@ -166,7 +166,7 @@ const QuestionPaperPage: FC = () => {
 
     return (
         <div className={classes.container}>
-            <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234 ,background:'#fff'}}>
+            <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234, background: '#fff' }}>
                 <Title className={classes.title}><Text>{notesData?.name}</Text></Title>
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
@@ -175,13 +175,13 @@ const QuestionPaperPage: FC = () => {
                     <Popover.Dropdown >
                         <div className='popover-container' style={{ display: "flex", flexDirection: "column", marginTop: "1rem" }}>
                             <span onClick={() => {
-                                addOption("title")
+                                addOption("title", "")
                             }} className={`option`}>Create Title </span>
                             <span onClick={() => {
-                                addOption("subtitle")
+                                addOption("subtitle", "")
                             }} className={`option `}>Create Sub title</span>
                             <span onClick={() => {
-                                addOption("about")
+                                addOption("about", "")
                             }} className={`option`}>Create paragrah</span>
                             <span onClick={() => {
                                 addOption("addimg", { h: 210, w: 510 })

@@ -238,14 +238,16 @@ const QuestionPaperPage: FC = () => {
         <div className={classes.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
                 <Title className={classes.title}><Text>{questionPaperData.name}</Text></Title>
-                <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" style={{ marginTop: '1rem' }}>
-                    <Popover.Target>
-                        <Button>Add Question</Button>
-                    </Popover.Target>
-                    <Popover.Dropdown>
-                        <AnswerTab qpid={router?.query?.id} isUpdate={false} />
-                    </Popover.Dropdown>
-                </Popover>
+                <div style={{ marginTop: '1rem' }}>
+                    <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
+                        <Popover.Target>
+                            <Button>Add Question</Button>
+                        </Popover.Target>
+                        <Popover.Dropdown>
+                            <AnswerTab qpid={router?.query?.id} isUpdate={false} />
+                        </Popover.Dropdown>
+                    </Popover>
+                </div>
             </div>
 
             <Tabs defaultValue="editor" id='tabid' style={{ width: 900, margin: "0 auto" }}>

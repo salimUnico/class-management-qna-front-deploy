@@ -99,8 +99,9 @@ const Index: FC = () => {
     const handleAddQuestionPaper = async () => {
         setLoadingAdd(true);
         try {
+            const { date, marks, name, subject } = modalData;
             const data = await axios.post(`/admin/question/paper`, {
-                ...modalData
+                name, marks, subject, date: dayjs(date).toISOString()
             });
             if (data?.data?.success) {
                 showNotification({
@@ -188,7 +189,7 @@ const Index: FC = () => {
 
                     <div style={{ display: "flex", flexDirection: "column" }}>
                         <label>Date</label>
-                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event: any) => setmodalData({ ...modalData, date: dayjs(event).toISOString() })} />
+                        <DatePicker style={{ width: "100%", height: 40 }} value={modalData.date} onChange={(event: any) => setmodalData({ ...modalData, date: event })} />
                     </div>
 
 

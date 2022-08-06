@@ -1,7 +1,7 @@
 import { ref, deleteObject } from "firebase/storage";
 import { storage } from "./firebase";
 
-const DeleteImage = async (path) => {
+const DeleteImage = async (path: any) => {
     const storageRef = ref(storage, path);
     const res = deleteObject(storageRef).then(() => {
         // File deleted successfully

@@ -143,7 +143,7 @@ const QuestionPaperPage: FC = () => {
     const addOption = (type, data) => {
         seteditorOption((old) => {
             return [...old, {
-                id: old[old.length - 1].id + 1,
+                id: old?.length ? old[old?.length - 1]?.id + 1 : old.length - 1,
                 value: "",
                 type,
                 ...data

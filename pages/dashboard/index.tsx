@@ -143,6 +143,15 @@ const Index: FC = () => {
                     <Title className={classes.title}><Text style={{ color: router.pathname.includes('user-management') ? 'blue' : 'black' }}
                         onClick={() => router.push('/user-management')}
                     >User-Management</Text></Title>
+                    <Title className={classes.title}><Text style={{ color: router.pathname.includes('user-management') ? 'blue' : 'black' }}
+                        onClick={() => {
+                            localStorage.removeItem('tokenexpiry');
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('islogged');
+                            router.push('/')
+                        }}
+                    >Logout</Text></Title>
                 </div>
                 <Button onClick={() => setaddQuestionPaperModal(true)}>Create Question Paper</Button>
             </Card>

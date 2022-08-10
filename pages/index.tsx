@@ -17,6 +17,7 @@ export default function HomePage() {
   const isLoggedIn = useAuth();
   const [user, setUser] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [forgot, setForgot] = useState(false);
 
   const handleSign = async () => {
     setLoading(true);
@@ -51,7 +52,40 @@ export default function HomePage() {
       setLoading(false);
     }
   };
-  if (!isLoggedIn) {
+
+  const handleForgot = async () => {
+    setLoading(true);
+    try {
+      const data = await axios.post('/admin/user/forgot', { ...user });
+      if (data?.data?.success) {
+        showNotification({
+          title: 'Success',
+          message: 'Check you email',
+        });
+        setTimeout(() => {
+
+          window.location.reload();
+        }, 1000);
+      }
+    } catch (error: any) {
+      if (error?.response?.data) {
+        showNotification({
+          title: 'Error',
+          color: 'red',
+          message: error?.response?.data?.data ?? 'Someting went wrong',
+        });
+      } else {
+        showNotification({
+          title: 'Error',
+          color: 'red',
+          message: error?.message ?? 'Something went wrong ',
+        });
+      }
+      setLoading(false);
+    }
+  }
+
+  if (!isLoggedIn && !forgot) {
     return (
       <>
         <Title className={classes.title} align="center" mt={100}>
@@ -79,9 +113,9 @@ export default function HomePage() {
               icon={<LockClosedIcon />}
 
             />
-            {/* <Text inherit color="blue" className={classes.forgot} component="span">
+            <Text inherit color="blue" className={classes.forgot} component="span" onClick={() => setForgot(true)}>
               Forgot Password ?
-            </Text> */}
+            </Text>
             <Button loading={loading} onClick={handleSign}>
               Sign in
             </Button>
@@ -89,6 +123,29 @@ export default function HomePage() {
         </div>
       </>
     );
+  } else if (!isLoggedIn && forgot) {
+    return (
+      <>
+        <div className={classes.container}>
+          <Card shadow="sm" p="lg" radius="md" withBorder className={classes.card} mt={37}>
+            <TextInput
+              label="Email"
+              required
+              value={user.email}
+              onChange={(event) => setUser({ ...user, email: event.currentTarget.value })}
+              id="emailuniq"
+              icon={<EnvelopeClosedIcon />}
+            />
+            <Text inherit color="blue" className={classes.forgot} component="span" onClick={() => setForgot(false)}>
+              Login
+            </Text>
+            <Button loading={loading} onClick={handleForgot}>
+              Send Email
+            </Button>
+          </Card>
+        </div>
+      </>
+    )
   }
   else {
     router.push('/dashboard')

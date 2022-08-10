@@ -21,7 +21,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   };
   const isLoggedIn = useAuth();
   const router = useRouter();
-  if (router.pathname === '/' || isLoggedIn) {
+  console.log(router.pathname)
+  if (router.pathname === '/' || router.pathname.includes('/forget-password') || isLoggedIn) {
     return (
       <>
         <Head>

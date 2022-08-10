@@ -120,6 +120,15 @@ const Notes: FC = () => {
                     <Title className={classes.title}><Text style={{ color: router.pathname.includes('user-management') ? 'blue' : 'black' }}
                         onClick={() => router.push('/user-management')}
                     >User-Management</Text></Title>
+                    <Title className={classes.title}><Text style={{ color: router.pathname.includes('user-management') ? 'blue' : 'black' }}
+                        onClick={() => {
+                            localStorage.removeItem('tokenexpiry');
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('islogged');
+                            router.push('/')
+                        }}
+                    >Logout</Text></Title>
                 </div>
                 <Popover width={300} position="bottom" withArrow shadow="md" id="popverddnotes">
                     <Popover.Target>

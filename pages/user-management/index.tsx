@@ -26,10 +26,6 @@ const Index: FC = () => {
         try {
             const data = await axios.get('/admin/user',);
             if (data?.data?.success) {
-                showNotification({
-                    title: 'Success',
-                    message: 'All Question paper loaded',
-                });
                 setQuestionData(data?.data?.data)
                 setLoading(false);
             }
@@ -230,7 +226,10 @@ const Index: FC = () => {
                                         <th>Email</th>
                                         <th>Telephone</th>
                                         <th>Role</th>
-                                        <th>Action</th>
+                                        {
+                                            JSON.parse(localStorage.getItem('user')).role == 'superadmin' &&
+                                            <th>Action</th>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -245,7 +244,9 @@ const Index: FC = () => {
                                                     <td>
                                                         {/* <Button onClick={() => router.push(`/question-paper/${itm?._id}`)} variant="light">View</Button> */}
                                                         {" "}
-                                                        <Button onClick={() => handleQuestionPaperDelete(itm?._id)} color="red" variant='outline'>Delete</Button>
+                                                        {
+                                                            JSON.parse(localStorage.getItem('user')).role == 'superadmin' && <Button onClick={() => handleQuestionPaperDelete(itm?._id)} color="red" variant='outline'>Delete</Button>
+                                                        }
                                                     </td>
                                                 </tr>
                                             )

@@ -240,7 +240,10 @@ const Index: FC = () => {
                                                     <td>
                                                         <Button onClick={() => router.push(`/question-paper/${itm?._id}`)} variant="light">View</Button>
                                                         {" "}
-                                                        <Button onClick={() => handleQuestionPaperDelete(itm?._id)} color="red" variant='outline'>Delete</Button>
+                                                        {
+                                                            JSON.parse(localStorage.getItem('user')).role == 'superadmin' &&
+                                                            <Button onClick={() => handleQuestionPaperDelete(itm?._id)} color="red" variant='outline'>Delete</Button>
+                                                        }
                                                     </td>
                                                 </tr>
                                             )

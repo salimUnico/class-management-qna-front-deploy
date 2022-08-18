@@ -20,6 +20,10 @@ import useAuth from '../../helper/useAuth';
 import { HomeIcon } from '@modulz/radix-icons';
 
 import DatePicker from "react-multi-date-picker"
+import type { RichTextEditorProps } from '@mantine/rte';
+
+//text editor css important
+import "react-quill/dist/quill.core.css";
 
 const styles = StyleSheet.create({
     page: {
@@ -27,8 +31,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#fff',
         margin: 10,
-        padding: 30,
-        width: '770px',
+        padding: "2rem",
+        width: '1000px',
         // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     },
     section: {
@@ -36,14 +40,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 20,
-        flexGrow: 1
+        flexGrow: 1,
+        marginTop: "2rem"
     },
     topTitle: {
         fontWeight: 700,
     },
     main: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop: "2rem"
     },
     qna: {
         display: 'flex',
@@ -54,7 +60,8 @@ const styles = StyleSheet.create({
 
     },
     ques: {
-        fontWeight: 500
+        fontWeight: "bolder",
+        fontSize: "20px"
     },
     ans: {
 
@@ -67,7 +74,8 @@ const styles = StyleSheet.create({
     },
     ansContainer: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginBottom: "1rem"
     }
 });
 
@@ -147,19 +155,224 @@ const QuestionPaperPage: FC = () => {
     const [modalData, setmodalData] = useState({
         name: "",
         subject: "",
-        date: "",
-        marks: ""
+        marks: "",
+        // datte: ""
+
+        tbc: "",
+        serialno: "",
+        timeallowed: "",
+        testbookletseries: "",
+        bannerLabel: "",
+        bannerInstructionFirst: null
     })
     const [loadingQ, setLoadingQ] = useState(false);
+
+    let mcqAlphas = ['a: ', 'b: ', 'c: ', 'd: ', 'e:', 'f:', 'g:', 'h:', 'i:']
+
+    const Doc = () => {
+        return (<Document>
+            <Page size="A4" style={styles.page} >
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
+                </div>
+                <div className="w-full text-center bannerlabel" >
+                    <h3>{questionPaperData.bannerLabel}</h3>
+                </div>
+
+                <div className="w-full flex align-center justify-between header-container">
+                    <div className="left flex flex-col justify-between ">
+                        <div className='info-contain'>
+                            <h3 style={{ marginBottom: "0.5rem" }} >
+                                <span className='bolder key'>T.B.C:</span>
+                                <span className='value'>{questionPaperData.tbc}</span>
+                            </h3>
+                            <h3 className='bolder'>
+                                <span className='bolder key'>Serial No:</span>
+                                <span className='value'>{questionPaperData.serialno}</span>
+                            </h3>
+                        </div>
+
+                        <div className='info-contain'>
+                            <h3 className='bolder'>
+                                <span className='bolder key'>Time Allowed:</span>
+                                <span className='value'>{questionPaperData.timeallowed}</span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div className="center flex flex-col text-center justify-center">
+                        <h2 className='font-none'>{questionPaperData.name}</h2>
+                        <h2 className="bolder">{questionPaperData.subject}</h2>
+
+                    </div>
+                    <div className="right  flex flex-col justify-between ">
+                        <div className="info-contain">
+                            <h3 className='  flex items-center flex-col text-center'><span className="bolder">Test Booklet Series</span><span className="bolder carc-container">{questionPaperData.testbookletseries}</span></h3>
+                        </div>
+                        <div className='info-contain'>
+                            <h3 className='bolder'>
+                                <span className='bolder key'>Maximum Marks:</span>
+                                <span className='value'>{questionPaperData.marks}</span>
+                            </h3>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="w-fill ql-editor" dangerouslySetInnerHTML={{ __html: questionPaperData.bannerInstructionFirst }} />
+
+                <div className="w-full text-center bannerlabel" >
+                    <h3>{questionPaperData.bannerLabel}</h3>
+                </div>
+
+                {/* 
+                <View style={styles.section}>
+                    <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
+                    <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
+                    <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
+                </View> */}
+
+                <View style={styles.main}>
+                    {questionAnswerData?.map((itm: any, i: Number) => {
+                        return (
+                            <View key={itm?._id} style={styles.qna}>
+                                <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
+                                {
+                                    itm?.type === "normal" ? <View style={styles.normal}>
+                                        {
+                                            ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
+                                        }
+                                    </View> :
+                                        <View style={styles.ansContainer}>
+                                            <View style={styles.mcqView}>{
+                                                itm?.mcq?.map((itm: any, i) => {
+                                                    return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
+                                                })
+                                            }</View>
+                                                {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{ }} />}
+
+                                            {
+                                                ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
+                                            }
+                                        </View>
+                                }
+                                {ansOnOff && itm.answerimage && <img src={itm?.answerimage?.url} width={itm?.answerimage?.width} height={itm?.answerimage?.height} style={{ }} />}
+                            </View>
+                        )
+                    })}
+                </View>
+
+                <style jsx>{`
+                    *{
+                        margin: 0;
+                        padding: 0;
+                        font-family: sans-serif;
+                    }
+
+                    @page { 
+                        size: auto;
+                    } 
+
+
+                    .flex{
+                        display: flex;
+                    }
+                    .items-center{
+                        align-items: center;
+                    }
+                    .justify-between{
+                        justify-content: space-between;
+                    }
+                    .justify-center{
+                        justify-content: center;
+                    }
+
+
+                    .bolder{
+                        font-weight: bolder;
+                    }
+                    .font-none{
+                        font-weight: 100;
+                    }
+
+                    .flex-col{
+                        flex-direction: column;
+                    }
+
+
+                    .header-container{
+                        height: 180px;
+                        margin-bottom: 1rem;
+                        border-bottom: 1px solid black;
+                        padding: 0.5rem;
+                    }
+                    .info-contain .key{
+                        font-size: 20px;
+                    }
+                    .info-contain .value{
+                        font-size: 18px;
+                        margin-left: 0.5rem;
+                        font-weight: 100;
+                    }
+
+                    .carc-container{
+                        font-size: 3rem;
+                        border: 2px solid;
+                        width: 100px;
+                        text-align: center;
+                    }
+
+
+                    .bannerlabel{
+                        border: 1px solid black;
+                        border-left: none;
+                        border-right: none;
+                        margin-bottom: 1rem;
+                        padding: 0.5rem;
+                    }
+
+                    .text-center{
+                        text-align: center;
+                    }
+            
+                `}</style>
+            </Page>
+        </Document>)
+    }
+
+    let RichTextValue = questionPaperData.bannerInstructionFirst;
+    function RichText(props: RichTextEditorProps) {
+        // const [RichTextValue] = useState("")
+
+        if (typeof window !== 'undefined') {
+            // eslint-disable-next-line import/extensions, global-require
+            const { RichTextEditor } = require('@mantine/rte');
+            return <RichTextEditor value={RichTextValue} onChange={(e) => {
+                RichTextValue = e;
+            }}  {...props} />;
+        }
+
+        // Render anything as fallback on server, e.g. loader or html content without editor
+        return null;
+    }
+
 
     const handleUpdateQuestionPaper = async () => {
         setLoadingQ(true);
         try {
             // const { question, option1, ans, option2, option3, option4 } = qna;
             const data = await axios.put(`/admin/question/paper/${router.query.id}`, {
-                subject: modalData?.subject !== '' ? modalData?.subject : questionPaperData?.subject,
-                date: modalData?.date !== '' ? dayjs(modalData?.date).toISOString() : questionPaperData?.date,
-                marks: modalData?.marks !== '' ? modalData?.marks : questionPaperData?.marks
+                name: modalData.name || questionPaperData.name,
+                subject: modalData.subject || questionPaperData?.subject,
+                marks: modalData.marks || questionPaperData?.marks,
+
+                tbc: modalData.tbc || questionPaperData?.tbc,
+                serialno: modalData.serialno || questionPaperData?.serialno,
+                timeallowed: modalData.timeallowed || questionPaperData?.timeallowed,
+                testbookletseries: modalData.testbookletseries || questionPaperData?.testbookletseries,
+                bannerLabel: modalData.bannerLabel || questionPaperData?.bannerLabel,
+
+                bannerInstructionFirst: RichTextValue,
+                bannerInstructionSecond: "null"
             });
             if (data?.data?.success) {
                 showNotification({
@@ -177,67 +390,22 @@ const QuestionPaperPage: FC = () => {
                 showNotification({
                     title: 'Error',
                     color: 'red',
-                    message: error?.response?.data?.data ?? 'Someting went wrong',
+                    message: error?.response?.data?.data || 'Someting went wrong',
                 });
             } else {
                 showNotification({
                     title: 'Error',
                     color: 'red',
-                    message: error?.message ?? 'Something went wrong ',
+                    message: error?.message || 'Something went wrong ',
                 });
             }
             setLoadingQ(false);
         }
     }
 
-    let mcqAlphas = ['a. ', 'b. ', 'c. ', 'd. ', 'e.', 'f.', 'g.', 'h.', 'i.']
-
-    const Doc = () => {
-        return (<Document>
-            <Page size="A4" style={styles.page} >
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
-                </div>
-                <View style={styles.section}>
-                    <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
-                    <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
-                    <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
-                </View>
-
-                <View style={styles.main}>
-                    {questionAnswerData?.map((itm: any, i: Number) => {
-                        return (
-                            <View key={itm?._id} style={styles.qna}>
-                                <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
-                                {
-                                    itm?.type === "normal" ? <View style={styles.normal}>
-                                        {
-                                            ansOnOff && <Text>Ans: {itm?.ans}</Text>
-                                        }
-                                    </View> :
-                                        <View style={styles.ansContainer}>
-                                            <View style={styles.mcqView}>{
-                                                itm?.mcq?.map((itm: any, i) => {
-                                                    return itm && <Text key={itm}>{mcqAlphas[i]}{itm}</Text>
-                                                })
-                                            }</View>
-                                            {
-                                                ansOnOff && <Text>Ans: {itm?.ans}</Text>
-                                            }
-                                        </View>
-                                }
-                            </View>
-                        )
-                    })}
-                </View>
-            </Page>
-        </Document>)
-    }
-
-
     return (
         <div className={classes.container}>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff',paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
                 <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/dashboard')} />
                 <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
@@ -261,28 +429,68 @@ const QuestionPaperPage: FC = () => {
                 <Tabs.Panel value="editor" pt="xs" >
                     <main className={classes.leftSide}>
                         <Card shadow={"xs"} className={classes.questionContainer}>
-                            <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                <TextInput
-                                    label="Subject"
-                                    required
-                                    // value={modalData.subject}
-                                    defaultValue={questionPaperData.subject}
-                                    onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
-                                    id="subjectinput"
-                                    style={{ width: 300 }}
-                                />
-                                <TextInput
-                                    label="Marks"
-                                    required
-                                    // value={modalData.marks}
-                                    defaultValue={questionPaperData.marks}
-                                    onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
-                                    id="marksinput"
-                                    style={{ width: 300 }}
-                                    type="number"
-                                />
+                            <div className="w-full">
+                                <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                                    <TextInput
+                                        label="Name"
+                                        required
+                                        // value={modalData.subject}
+                                        defaultValue={questionPaperData.name}
+                                        onChange={(event) => setmodalData({ ...modalData, name: event.currentTarget.value })}
+                                        id="nameinput"
+                                        style={{ width: 300 }}
+                                    />
+                                    <TextInput
+                                        label="Subject"
+                                        required
+                                        // value={modalData.subject}
+                                        defaultValue={questionPaperData.subject}
+                                        onChange={(event) => setmodalData({ ...modalData, subject: event.currentTarget.value })}
+                                        id="subjectinput"
+                                        style={{ width: 300 }}
+                                    />
+                                    <TextInput
+                                        label="Marks"
+                                        required
+                                        // value={modalData.marks}
+                                        defaultValue={questionPaperData.marks}
+                                        onChange={(event) => setmodalData({ ...modalData, marks: event.currentTarget.value })}
+                                        id="marksinput"
+                                        style={{ width: 300 }}
+                                        type="number"
+                                    />
+                                </div>
+                                <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: "1rem" }}>
+                                    <TextInput
+                                        label="T.B.C"
+                                        required
+                                        // value={modalData.tbc}
+                                        defaultValue={questionPaperData.tbc}
+                                        onChange={(event) => setmodalData({ ...modalData, tbc: event.currentTarget.value })}
+                                        id="tbcinput"
+                                        style={{ width: 300 }}
+                                    />
 
-                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <TextInput
+                                        label="Serial No"
+                                        required
+                                        // value={modalData.tbc}
+                                        defaultValue={questionPaperData.serialno}
+                                        onChange={(event) => setmodalData({ ...modalData, serialno: event.currentTarget.value })}
+                                        id="serialnoinput"
+                                        style={{ width: 300 }}
+                                    />
+                                    <TextInput
+                                        label="Time Allowed"
+                                        required
+                                        // value={modalData.timeallowed}
+                                        defaultValue={questionPaperData.timeallowed}
+                                        onChange={(event) => setmodalData({ ...modalData, timeallowed: event.currentTarget.value })}
+                                        id="timeallowedinput"
+                                        style={{ width: 300 }}
+                                    />
+
+                                    {/* <div style={{ display: "flex", flexDirection: "column" }}>
                                     <label>Date</label>
                                     <DatePicker style={{ width: "100%", height: 40 }}
                                         value={questionPaperData.date}
@@ -290,12 +498,43 @@ const QuestionPaperPage: FC = () => {
                                             setmodalData({ ...modalData, date: event })
                                         }}
                                     />
+                                </div> */}
                                 </div>
 
+                                <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: "1rem" }}>
+                                    <TextInput
+                                        label="Test Booklet Series"
+                                        required
+                                        // value={modalData.testbookletseries}
+                                        defaultValue={questionPaperData.testbookletseries}
+                                        onChange={(event) => setmodalData({ ...modalData, testbookletseries: event.currentTarget.value })}
+                                        id="testbookletseriesinput"
+                                        style={{ width: 300 }}
+                                    />
+                                    <TextInput
+                                        label="Banner Label"
+                                        required
+                                        // value={modalData.bannerLabel}
+                                        defaultValue={questionPaperData.bannerLabel}
+                                        onChange={(event) => setmodalData({ ...modalData, bannerLabel: event.currentTarget.value })}
+                                        id="bannerLabelinput"
+                                        style={{ width: "100%" }}
+                                    />
+                                </div>
+
+                                <div className="w-full" style={{ gap: '1rem', marginTop: "1rem" }}>
+                                    <RichText controls={[
+                                        ['bold', 'italic', 'underline'],
+                                        ['unorderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+                                        ['sup', 'sub'],
+                                        ['alignLeft', 'alignCenter', 'alignRight'],
+                                    ]} />
+                                </div>
 
                                 <div style={{ display: "flex", marginTop: "1rem" }}>
                                     <Button size='sm' style={{ width: "100%" }} onClick={handleUpdateQuestionPaper}>Save</Button>
                                 </div>
+
                             </div>
                         </Card>
 
@@ -305,6 +544,8 @@ const QuestionPaperPage: FC = () => {
                                     id={itm?._id}
                                     qpid={router?.query?.id}
                                     question={itm?.question}
+                                    questionimage={itm.questionimage || null}
+
                                     option1={itm?.mcq[0]}
                                     option2={itm?.mcq[1]}
                                     option3={itm?.mcq[2]}
@@ -314,6 +555,8 @@ const QuestionPaperPage: FC = () => {
                                     option7={itm?.mcq[6]}
                                     option8={itm?.mcq[7]}
                                     ans={itm?.ans}
+                                    answerimage={itm.answerimage || null}
+
                                     isUpdate={true}
                                 />
                             })

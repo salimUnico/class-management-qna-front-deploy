@@ -1,15 +1,31 @@
 import { useState } from 'react';
-import { Button, Switch, Card, TextInput, Title, } from '@mantine/core';
+import { Button, Switch, Card, TextInput, Title, FileInput } from '@mantine/core';
 
 import { showNotification } from '@mantine/notifications';
 import axios from '../helper/axios';
 
-const AnswerTab = ({ question, option1, option3, option2, option4, option5, option6, option7, option8, ans, isUpdate, id, qpid }: any) => {
+import UploadImage from '../helper/imageUpload';
+import DeleteImage from '../helper/imageDelete';
+
+
+const AnswerTab = ({ question, questionimage, option1, option3, option2, option4, option5, option6, option7, option8, ans, answerimage, isUpdate, id, qpid }: any) => {
     const [qna, setQna] = useState({
         question: '',
+        questionImage: {
+            url: questionimage?.url,
+            file: null,
+            height: questionimage?.height || 0,
+            width: questionimage?.width || 0
+        },
         option1: '', option3: '', option2: '', option4: '',
         option5: '', option6: '', option7: '', option8: '',
         ans: '',
+        answerImage: {
+            url: answerimage?.url,
+            file: null,
+            height: answerimage?.height || 0,
+            width: answerimage?.width || 0
+        },
     })
     const [loadingAdd, setLoadingAdd] = useState(false);
     const [loadingUpdate, setLoadingUpdate] = useState(false);
@@ -17,15 +33,33 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
 
     const handleQAAdd = async () => {
         setLoadingAdd(true);
+
+        const { question, questionImage, option1, ans, answerImage, option2, option3, option4, option5, option6, option7, option8 } = qna;
+        let body = {
+            qpid: qpid,
+            question: question,
+
+            ans: ans,
+            type: "mcq",
+            mcq: [option1, option2, option3, option4, option5, option6, option7, option8]
+        }
+        if (qna.questionImage.file) {
+            let refName = `question_image/${Date.now()}_question`;
+            const questionImgUrl = await UploadImage(qna.questionImage.file, refName);
+
+            body["questionimage"] = { ...questionImage, url: questionImgUrl }
+        }
+        if (qna.answerImage.file) {
+            let refName = `question_image/${Date.now()}_answer`;
+            const answerUrl = await UploadImage(qna.answerImage.file, refName);
+
+            body["answerimage"] = { ...answerImage, url: answerUrl }
+        }
+
+
         try {
-            const { question, option1, ans, option2, option3, option4, option5, option6, option7, option8 } = qna;
-            const data = await axios.post(`/admin/question/ans`, {
-                qpid: qpid,
-                question: question,
-                ans: ans,
-                type: "mcq",
-                mcq: [option1, option2, option3, option4, option5, option6, option7, option8]
-            });
+
+            const data = await axios.post(`/admin/question/ans`, body);
             if (data?.data?.success) {
                 showNotification({
                     title: 'Success',
@@ -57,7 +91,7 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
         setLoadingUpdate(true);
         try {
             // const { question, option1, ans, option2, option3, option4 } = qna;
-            const data = await axios.put(`/admin/question/ans/${id}`, {
+            const body = {
                 question: qna.question !== '' ? qna.question : question,
                 ans: qna.ans !== '' ? qna.ans : ans,
                 type: "mcq",
@@ -71,7 +105,28 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
                     qna.option7 !== '' ? qna.option7 : option7,
                     qna.option8 !== '' ? qna.option4 : option4,
                 ]
-            });
+            }
+            if(questionimage){
+                body["questionimage"] = { ...qna.questionImage }
+            }
+            if(answerimage){
+                body["answerimage"] = { ...qna.answerImage }
+            }
+            if (qna.questionImage.file) {
+                let refName = `question_image/${Date.now()}_question`;
+                const questionImgUrl = await UploadImage(qna.questionImage.file, refName);
+    
+                body["questionimage"] = { ...qna.questionImage, url: questionImgUrl }
+            }
+            if (qna.answerImage.file) {
+                let refName = `question_image/${Date.now()}_answer`;
+                const answerUrl = await UploadImage(qna.answerImage.file, refName);
+    
+                body["answerimage"] = { ...qna.answerImage, url: answerUrl }
+            }
+
+
+            const data = await axios.put(`/admin/question/ans/${id}`, body);
             if (data?.data?.success) {
                 showNotification({
                     title: 'Success',
@@ -101,6 +156,14 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
 
     const handleQADelete = async () => {
         setLoadingDelete(true);
+
+        if (questionimage) {
+            await DeleteImage(questionimage.url)
+        }
+        if (answerimage) {
+            await DeleteImage(answerimage.url)
+        }
+
         try {
             // const { question, option1, ans, option2, option3, option4 } = qna;
             const data = await axios.delete(`/admin/question/ans/${id}`);
@@ -136,8 +199,34 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
         <TextInput
             onChange={e => setQna({ ...qna, question: e.target.value })}
             defaultValue={question}
-            label="Question" style={{ width: '100%F' }} id="subject"
+            label="Question" style={{ width: '100%' }} id="subject"
         />
+        <div className="w-full flex items-center " style={{ marginBottom: "1rem" }}>
+            <FileInput
+                placeholder="Select Question Image (optional)"
+                label="Select Question Image (optional)"
+                required
+                style={{ width: "40%" }}
+
+                onChange={async (e) => {
+                    setQna({ ...qna, questionImage: { ...qna.questionImage, file: e } })
+                }}
+            />
+            <TextInput
+                onChange={e => setQna({ ...qna, questionImage: { ...qna.questionImage, width: Number(e.target.value) } })}
+                defaultValue={qna.questionImage?.width}
+                label="Image Width" style={{ width: '28%', margin: "0 0.5rem" }} id="subject"
+            />
+            <TextInput
+                onChange={e => setQna({ ...qna, questionImage: { ...qna.questionImage, height: Number(e.target.value) } })}
+                defaultValue={qna.questionImage?.height}
+                label="Image Height" style={{ width: '28%' }} id="subject"
+            />
+
+            {isUpdate && questionimage && <img style={{ marginLeft: "0.5rem",objectFit: "cover" }} src={qna.questionImage.url}  height={"100"} width={"100"} />}
+
+        </div>
+
         <div style={{ display: 'flex', gap: '1rem' }}>
             <TextInput
                 defaultValue={option1}
@@ -189,12 +278,37 @@ const AnswerTab = ({ question, option1, option3, option2, option4, option5, opti
                 label="Option 8" style={{ width: '190px' }} id="makdfdrs"
             />
         </div>
-
         <TextInput
             defaultValue={ans}
             onChange={e => setQna({ ...qna, ans: e.target.value })}
-            label="Correct Answer" style={{ width: '100%' }} id="subject"
-        />{
+            label="Correct Answer" style={{ width: "100%" }} id="subject"
+        />
+
+        <div className="w-full flex items-center " style={{ marginBottom: "1rem" }}>
+            <FileInput
+                placeholder="Select Answer Image (optional)"
+                label="Select Answer Image (optional)"
+                required
+                style={{ width: "40%" }}
+
+                onChange={async (e) => {
+                    setQna({ ...qna, answerImage: { ...qna.answerImage, file: e } })
+                }}
+            />
+            <TextInput
+                onChange={e => setQna({ ...qna, answerImage: { ...qna.answerImage, width: Number(e.target.value) } })}
+                defaultValue={qna.answerImage?.width}
+                label="Image Width" style={{ width: '28%', margin: "0 0.5rem" }} id="subject"
+            />
+            <TextInput
+                onChange={e => setQna({ ...qna, answerImage: { ...qna.answerImage, height: Number(e.target.value) } })}
+                defaultValue={qna.answerImage?.height}
+                label="Image Height" style={{ width: '28%' }} id="subject"
+            />
+            {isUpdate && answerimage && <img style={{ marginLeft: "0.5rem",objectFit: "cover" }} src={qna.answerImage.url}  height={"100"} width={"100"} />}
+        </div>
+
+        {
             isUpdate ?
                 <div style={{ display: 'flex', gap: '1rem' }}>
                     <Button

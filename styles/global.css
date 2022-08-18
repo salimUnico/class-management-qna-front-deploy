@@ -1,0 +1,31 @@
+.w-full{
+    width: 100%;
+}
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+
+.bolder {
+    font-weight: bolder;
+}
+
+.font-none {
+    font-weight: 100;
+}
+
+.flex-col {
+    flex-direction: column;
+}

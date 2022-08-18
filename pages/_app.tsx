@@ -10,6 +10,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from 'next/router';
 import useAuth from '../helper/useAuth';
 
+import "../styles/global.css"
+
 export default function App(props: AppProps & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
@@ -29,6 +31,8 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           <title>TPI CLMS</title>
           <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
           <link rel="shortcut icon" href="/favicon.svg" />
+          {/* <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.4/quill.snow.css" />  */}
+
         </Head>
 
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>

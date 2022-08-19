@@ -1,6 +1,7 @@
-.w-full{
+.w-full {
     width: 100%;
 }
+
 .flex {
     display: flex;
 }
@@ -28,4 +29,57 @@
 
 .flex-col {
     flex-direction: column;
+}
+
+
+
+/* .myheader-space,
+.myfooter-space {
+    height: 50px;
+    background-color: red;
+} */
+
+
+@media print {
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 95%;
+        margin: auto;
+        background: white;
+        padding-bottom: 1rem;
+    }
+
+    .logo-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 95%;
+        margin: auto;
+
+        background: white;
+    }
+
+
+    .header-space,
+    .footer-space {
+        height: 150px;
+    }
+
+
+
+    .watermark-container {
+        position: fixed !important;
+        left: 0;
+        right: 0;
+        /* height: 1122.519685px !important; */
+        margin: auto;
+
+        background: white;
+    }
+
+
 }

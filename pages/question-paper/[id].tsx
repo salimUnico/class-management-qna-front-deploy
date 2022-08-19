@@ -25,14 +25,16 @@ import type { RichTextEditorProps } from '@mantine/rte';
 //text editor css important
 import "react-quill/dist/quill.core.css";
 
-const styles = StyleSheet.create({
+const styles = {
     page: {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#fff',
-        margin: 10,
+        paddingRight: "3rem",
+        height: "100%",
+        marginBottom: 10,
         padding: "2rem",
-        width: '1000px',
+        paddingTop: 0
         // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
     },
     section: {
@@ -47,21 +49,22 @@ const styles = StyleSheet.create({
         fontWeight: 700,
     },
     main: {
-        display: 'flex',
-        flexDirection: 'column',
+        // display: 'flex',
+        // flexDirection: 'column',
         marginTop: "2rem"
     },
     qna: {
         display: 'flex',
         flexDirection: 'column',
-        marginBottom: 15
+        height: "fit-content",
+        margin: "15px 0",
     },
     normal: {
 
     },
     ques: {
         fontWeight: "bolder",
-        fontSize: "20px"
+        fontSize: "20px",
     },
     ans: {
 
@@ -69,15 +72,15 @@ const styles = StyleSheet.create({
     mcqView: {
         display: 'flex',
         gap: '2rem',
-        margin: 5,
-        flexWrap: 'wrap'
+        margin: "0.5rem 0",
+        flexWrap: 'wrap',
     },
     ansContainer: {
         display: 'flex',
         flexDirection: 'column',
         marginBottom: "1rem"
-    }
-});
+    },
+};
 
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
@@ -170,98 +173,116 @@ const QuestionPaperPage: FC = () => {
     let mcqAlphas = ['a: ', 'b: ', 'c: ', 'd: ', 'e:', 'f:', 'g:', 'h:', 'i:']
 
     const Doc = () => {
-        return (<Document>
-            <Page size="A4" style={styles.page} >
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
-                </div>
-                <div className="w-full text-center bannerlabel" >
-                    <h3>{questionPaperData.bannerLabel}</h3>
-                </div>
+        return (<div style={{
+            width: '1000px',
+            paddingLeft: "3rem",
+            paddingRight: "3rem",
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative'
+        }}>
 
-                <div className="w-full flex align-center justify-between header-container">
-                    <div className="left flex flex-col justify-between ">
-                        <div className='info-contain'>
-                            <h3 style={{ marginBottom: "0.5rem" }} >
-                                <span className='bolder key'>T.B.C:</span>
-                                <span className='value'>{questionPaperData.tbc}</span>
-                            </h3>
-                            <h3 className='bolder'>
-                                <span className='bolder key'>Serial No:</span>
-                                <span className='value'>{questionPaperData.serialno}</span>
-                            </h3>
+            <table>
+                <thead>
+                    <tr><td>
+                        <div className="myheader-space"></div>
+                    </td></tr>
+                </thead>
+                <tbody>
+                    <tr><td>
+
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
+                        </div>
+                        <div className="w-full text-center bannerlabel" >
+                            <h3>{questionPaperData.bannerLabel}</h3>
                         </div>
 
-                        <div className='info-contain'>
-                            <h3 className='bolder'>
-                                <span className='bolder key'>Time Allowed:</span>
-                                <span className='value'>{questionPaperData.timeallowed}</span>
-                            </h3>
+                        <div className="w-full flex align-center justify-between header-container">
+                            <div className="left flex flex-col justify-between ">
+                                <div className='info-contain'>
+                                    <h3 style={{ marginBottom: "0.5rem" }} >
+                                        <span className='bolder key'>T.B.C:</span>
+                                        <span className='value'>{questionPaperData.tbc}</span>
+                                    </h3>
+                                    <h3 className='bolder'>
+                                        <span className='bolder key'>Serial No:</span>
+                                        <span className='value'>{questionPaperData.serialno}</span>
+                                    </h3>
+                                </div>
+
+                                <div className='info-contain'>
+                                    <h3 className='bolder'>
+                                        <span className='bolder key'>Time Allowed:</span>
+                                        <span className='value'>{questionPaperData.timeallowed}</span>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div className="center flex flex-col text-center justify-center">
+                                <h2 className='font-none'>{questionPaperData.name}</h2>
+                                <h2 className="bolder">{questionPaperData.subject}</h2>
+
+                            </div>
+                            <div className="right  flex flex-col justify-between ">
+                                <div className="info-contain">
+                                    <h3 className='  flex items-center flex-col text-center'><span className="bolder">Test Booklet Series</span><span className="bolder carc-container">{questionPaperData.testbookletseries}</span></h3>
+                                </div>
+                                <div className='info-contain'>
+                                    <h3 className='bolder'>
+                                        <span className='bolder key'>Maximum Marks:</span>
+                                        <span className='value'>{questionPaperData.marks}</span>
+                                    </h3>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
-                    <div className="center flex flex-col text-center justify-center">
-                        <h2 className='font-none'>{questionPaperData.name}</h2>
-                        <h2 className="bolder">{questionPaperData.subject}</h2>
 
-                    </div>
-                    <div className="right  flex flex-col justify-between ">
-                        <div className="info-contain">
-                            <h3 className='  flex items-center flex-col text-center'><span className="bolder">Test Booklet Series</span><span className="bolder carc-container">{questionPaperData.testbookletseries}</span></h3>
+                        <div className="w-fill ql-editor" dangerouslySetInnerHTML={{ __html: questionPaperData.bannerInstructionFirst }} />
+
+                        <div className="w-full text-center bannerlabel" style={{ marginTop: "2rem" }} >
+                            <h3>{questionPaperData.bannerLabel}</h3>
                         </div>
-                        <div className='info-contain'>
-                            <h3 className='bolder'>
-                                <span className='bolder key'>Maximum Marks:</span>
-                                <span className='value'>{questionPaperData.marks}</span>
-                            </h3>
-                        </div>
-                    </div>
 
-                </div>
 
-                <div className="w-fill ql-editor" dangerouslySetInnerHTML={{ __html: questionPaperData.bannerInstructionFirst }} />
-
-                <div className="w-full text-center bannerlabel" >
-                    <h3>{questionPaperData.bannerLabel}</h3>
-                </div>
-
-                {/* 
-                <View style={styles.section}>
-                    <Text style={styles.topTitle}>Date : {dayjs(questionPaperData?.date).format('DD/MM/YYYY')}</Text>
-                    <Text style={styles.topTitle}>Subject : {questionPaperData?.subject}</Text>
-                    <Text style={styles.topTitle}>Marks : {questionPaperData?.marks}</Text>
-                </View> */}
-
-                <View style={styles.main}>
-                    {questionAnswerData?.map((itm: any, i: Number) => {
-                        return (
-                            <View key={itm?._id} style={styles.qna}>
-                                <Text style={styles.ques}>{Number(i) + 1}. {itm?.question}</Text>
-                                {
-                                    itm?.type === "normal" ? <View style={styles.normal}>
+                        <div style={styles.main}>
+                            {questionAnswerData?.map((itm: any, i: Number) => {
+                                return (
+                                    <div key={itm?._id} style={styles.qna}>
+                                        <h3 style={styles.ques}>{Number(i) + 1}. {itm?.question}</h3>
                                         {
-                                            ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
+                                            itm?.type === "normal" ? <div style={styles.normal}>
+                                                {
+                                                    ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
+                                                }
+                                            </div> :
+                                                <div style={styles.ansContainer}>
+                                                    <div style={styles.mcqView}>{
+                                                        itm?.mcq?.map((itm: any, i) => {
+                                                            return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
+                                                        })
+                                                    }</div>
+                                                    {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{}} />}
+
+                                                    {
+                                                        ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
+                                                    }
+                                                </div>
                                         }
-                                    </View> :
-                                        <View style={styles.ansContainer}>
-                                            <View style={styles.mcqView}>{
-                                                itm?.mcq?.map((itm: any, i) => {
-                                                    return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
-                                                })
-                                            }</View>
-                                                {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{ }} />}
+                                        {ansOnOff && itm.answerimage && <img src={itm?.answerimage?.url} width={itm?.answerimage?.width} height={itm?.answerimage?.height} style={{}} />}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><td>
+                        <div className="myfooter-space"></div>
+                    </td></tr>
+                </tfoot>
+            </table>
 
-                                            {
-                                                ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
-                                            }
-                                        </View>
-                                }
-                                {ansOnOff && itm.answerimage && <img src={itm?.answerimage?.url} width={itm?.answerimage?.width} height={itm?.answerimage?.height} style={{ }} />}
-                            </View>
-                        )
-                    })}
-                </View>
-
-                <style jsx>{`
+            <style jsx>{`
                     *{
                         margin: 0;
                         padding: 0;
@@ -328,15 +349,18 @@ const QuestionPaperPage: FC = () => {
                         border-right: none;
                         margin-bottom: 1rem;
                         padding: 0.5rem;
+
+                        margin: 1rem 0;
                     }
 
                     .text-center{
                         text-align: center;
                     }
             
-                `}</style>
-            </Page>
-        </Document>)
+             `}</style>
+
+        </div>
+        )
     }
 
     let RichTextValue = questionPaperData.bannerInstructionFirst;
@@ -404,10 +428,10 @@ const QuestionPaperPage: FC = () => {
     }
 
     return (
-        <div className={classes.container}>
+        <div style={styles.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
                 <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/dashboard')} />
-                <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
+                <Title style={styles.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
                         <Popover.Target>
@@ -420,15 +444,15 @@ const QuestionPaperPage: FC = () => {
                 </div>
             </div>
 
-            <Tabs defaultValue="editor" id='tabid' style={{ width: 900, margin: "0 auto" }}>
+            <Tabs defaultValue="preview" id='tabid' style={{ width: 900, margin: "0 auto" }}>
                 <Tabs.List>
                     <Tabs.Tab value="editor" >Editor</Tabs.Tab>
                     <Tabs.Tab value="preview" >Preview</Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panel value="editor" pt="xs" >
-                    <main className={classes.leftSide}>
-                        <Card shadow={"xs"} className={classes.questionContainer}>
+                    <main style={styles.leftSide}>
+                        <Card shadow={"xs"} style={styles.questionContainer}>
                             <div className="w-full">
                                 <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                     <TextInput
@@ -565,7 +589,7 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="preview" pt="xs">
-                    <main className={classes.rightSide}>
+                    <main style={styles.rightSide}>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />
@@ -575,7 +599,7 @@ const QuestionPaperPage: FC = () => {
                                     </PDFDownloadLink>
                                 } */}
                                 <ReactToPrint
-                                    // onBeforePrint={() => { styles.page.boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}
+                                    // onBeforePrint={() =>style { styles.page.boxShadow = 'rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px' }}
                                     trigger={() => <Button className="g-font">Download Question Paper</Button>}
                                     content={() => ref.current}
                                 />

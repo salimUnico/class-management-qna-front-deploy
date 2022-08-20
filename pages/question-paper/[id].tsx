@@ -24,6 +24,7 @@ import type { RichTextEditorProps } from '@mantine/rte';
 
 //text editor css important
 import "react-quill/dist/quill.core.css";
+import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, Message } from 'tabler-icons-react';
 
 const styles = {
     page: {
@@ -182,18 +183,27 @@ const QuestionPaperPage: FC = () => {
             position: 'relative'
         }}>
 
+            <div className="watermark-container">
+                <img src='/unico.png' />
+            </div>
+
+            <div className='logo-container question' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={100} width={250} style={{ objectFit: "contain" }} />
+            </div>
+
+
             <table>
                 <thead>
                     <tr><td>
-                        <div className="myheader-space"></div>
+                        <div className="header-space"></div>
                     </td></tr>
                 </thead>
                 <tbody>
                     <tr><td>
 
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={70} width={160} />
-                        </div>
+                        </div> */}
                         <div className="w-full text-center bannerlabel" >
                             <h3>{questionPaperData.bannerLabel}</h3>
                         </div>
@@ -277,10 +287,101 @@ const QuestionPaperPage: FC = () => {
                 </tbody>
                 <tfoot>
                     <tr><td>
-                        <div className="myfooter-space"></div>
+                        <div className="footer-space"></div>
                     </td></tr>
                 </tfoot>
             </table>
+
+
+
+            <footer className='print-footer-container flex flex-col items-center'>
+                <div className="top w-full flex items-center justify-between">
+                    <a href='/sasasasas' target={"_blank"} className='contain'>
+                        <Message strokeWidth={2} color='#85053f' />
+                        <span>info@theprayasindia.com</span>
+                    </a>
+                    <div className='contain'>
+                        <BrandWhatsapp strokeWidth={2} color='#85053f' />
+                        <span>+91-7710013217 / 9892560176</span>
+                    </div>
+                    <div className='contain'>
+                        <span>Follow Us</span>
+                        <div style={{ marginLeft: "0.5rem" }}>
+                            <BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
+                            <BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
+                            <BrandTwitter strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
+                            <BrandLinkedin strokeWidth={2} color='#85053f' />
+                        </div>
+                    </div>
+                </div>
+                <div className="bottom w-full">
+                    <h2>www.theprayasindia.com/e-pathshala</h2>
+                </div>
+            </footer>
+
+            <style jsx>{`
+                .watermark-container {
+                    position: absolute;
+                    height: 100%;
+                    width: 100%;
+                    z-index: -1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center
+                    
+                }
+                .watermark-container img{
+                    height: 400px;
+                    width: 400px;
+                    opacity: 0.2;
+                }
+
+
+                .logo-container{
+                    margin-bottom: 2rem;
+                }
+
+                .logo-container::before,
+                .logo-container::after{
+                    display: inline-block;
+                    content: "";
+                    border-top: .3rem solid #85053f;
+                    width: 100%;
+                    transform: translateY(1rem);
+                }
+
+
+                .print-footer-container {
+                    margin-top: 2rem;
+                }
+
+                .print-footer-container .top .contain{
+                    display: flex;
+                    align-items: center;
+                }
+
+                .print-footer-container .top .contain span{
+                    font-weight: bold;
+                    font-size: 18px;
+                    font-family: sans-serif;
+                    margin-left: 0.5rem;
+                }
+
+                .print-footer-container .bottom {
+                    background: #85053f;
+                    margin-top: 0.5rem;
+
+                }
+
+                .print-footer-container .bottom h2{
+                    color: white;
+                    font-size: 16px;
+                    text-align: center;
+                }
+            
+            
+            `}</style>
+
 
             <style jsx>{`
                     *{

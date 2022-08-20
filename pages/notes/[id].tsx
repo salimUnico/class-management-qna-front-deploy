@@ -13,6 +13,9 @@ import UploadImage from '../../helper/imageUpload';
 import { HomeIcon } from '@modulz/radix-icons';
 import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, Message } from 'tabler-icons-react';
 
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+import 'react-quill/dist/quill.snow.css';
 
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
@@ -109,7 +112,7 @@ const QuestionPaperPage: FC = () => {
             position: 'relative'
         }} className="page-container">
 
-            <div className="watermark-container">
+            <div className="watermark-container" >
                 <img src='/unico.png' />
             </div>
 
@@ -137,8 +140,10 @@ const QuestionPaperPage: FC = () => {
                                         {
                                             item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold' }}>{item?.value}</h1> :
                                                 item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
-                                                    item?.type === 'about' ? <p key={item?.id} style={{ fontSize: '16px' }}>{item?.value}</p> :
-                                                        item?.type === 'addimg' ? <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} /> :
+                                                    item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
+                                                        item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                            <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
+                                                        </div> :
                                                             null
                                         }
                                     </>
@@ -357,14 +362,24 @@ const QuestionPaperPage: FC = () => {
                                                         id="subtitleinput"
                                                         style={{ marginBottom: "0.5rem" }}
                                                     />
-                                                        : item.type == "about" ? <Textarea
-                                                            label="Paragraph"
-                                                            required
-                                                            value={item.value}
-                                                            onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
-                                                            id="aboutinput"
-                                                            style={{ marginBottom: "0.5rem" }}
-                                                        />
+                                                        : item.type == "about" ? <>
+                                                            <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
+                                                                value={item.value}
+                                                                onChange={(e) => {
+                                                                    if (item.value !== e) {
+                                                                        changeValue({ ...item, value: e })
+                                                                        console.log(e)
+                                                                    }
+                                                                }} />
+                                                            {/* <Textarea
+                                                                label="Paragraph"
+                                                                required
+                                                                value={item.value}
+                                                                onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
+                                                                id="aboutinput"
+                                                                style={{ marginBottom: "0.5rem" }}
+                                                            /> */}
+                                                        </>
                                                             : item.type == "addimg" &&
                                                             <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center', gap: '1rem', borderRadius: '5px' }}>
                                                                 <div>

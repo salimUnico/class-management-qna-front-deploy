@@ -211,7 +211,7 @@ const QuestionPaperPage: FC = () => {
                                             fontSize: "20px",
                                         }}>{Number(i) + 1}. {itm?.question}</h3>
                                         {
-                                            itm?.type === "normal" ? <div style={styles.normal}>
+                                            itm?.type === "normal" ? <div>
                                                 {
                                                     ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
                                                 }
@@ -427,15 +427,11 @@ const QuestionPaperPage: FC = () => {
     let RichTextValue = questionPaperData.bannerInstructionFirst;
     function RichText(props: RichTextEditorProps) {
         // const [RichTextValue] = useState("")
-
         if (typeof window !== 'undefined') {
             // eslint-disable-next-line import/extensions, global-require
             const { RichTextEditor } = require('@mantine/rte');
-            return <RichTextEditor value={RichTextValue} onChange={(e) => {
-                RichTextValue = e;
-            }}  {...props} />;
+            return <RichTextEditor {...props} />;
         }
-
         // Render anything as fallback on server, e.g. loader or html content without editor
         return null;
     }
@@ -489,10 +485,10 @@ const QuestionPaperPage: FC = () => {
     }
 
     return (
-        <div style={classes.container}>
+        <div className={classes.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
                 <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/dashboard')} />
-                <Title style={classes.title} ><Text>{questionPaperData.name}</Text></Title>
+                <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
                         <Popover.Target>
@@ -512,8 +508,8 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.List>
 
                 <Tabs.Panel value="editor" pt="xs" >
-                    <main style={classes.leftSide}>
-                        <Card shadow={"xs"} style={classes.questionContainer}>
+                    <main className={classes.leftSide}>
+                        <Card shadow={"xs"} className={classes.questionContainer}>
                             <div className="w-full">
                                 <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                     <TextInput
@@ -608,12 +604,14 @@ const QuestionPaperPage: FC = () => {
                                 </div>
 
                                 <div className="w-full" style={{ gap: '1rem', marginTop: "1rem" }}>
-                                    <RichText controls={[
+                                    <RichText value={RichTextValue} controls={[
                                         ['bold', 'italic', 'underline'],
                                         ['unorderedList', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
                                         ['sup', 'sub'],
                                         ['alignLeft', 'alignCenter', 'alignRight'],
-                                    ]} />
+                                    ]} onChange={(e) => {
+                                        RichTextValue = e;
+                                    }} />
                                 </div>
 
                                 <div style={{ display: "flex", marginTop: "1rem" }}>
@@ -650,7 +648,7 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="preview" pt="xs">
-                    <main style={classes.rightSide}>
+                    <main className={classes.rightSide}>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />

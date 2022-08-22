@@ -27,7 +27,7 @@ import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsa
 
 const QuestionPaperPage: FC = () => {
 
-    const { styles } = useStyles();
+    const { classes } = useStyles();
     const router = useRouter();
     const ref = useRef();
     const [ansOnOff, setAnsOnOff] = useState(false);
@@ -489,10 +489,10 @@ const QuestionPaperPage: FC = () => {
     }
 
     return (
-        <div style={styles.container}>
+        <div style={classes.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
                 <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/dashboard')} />
-                <Title style={styles.title} ><Text>{questionPaperData.name}</Text></Title>
+                <Title style={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
                         <Popover.Target>
@@ -512,8 +512,8 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.List>
 
                 <Tabs.Panel value="editor" pt="xs" >
-                    <main style={styles.leftSide}>
-                        <Card shadow={"xs"} style={styles.questionContainer}>
+                    <main style={classes.leftSide}>
+                        <Card shadow={"xs"} style={classes.questionContainer}>
                             <div className="w-full">
                                 <div className="w-full" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                                     <TextInput
@@ -650,7 +650,7 @@ const QuestionPaperPage: FC = () => {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="preview" pt="xs">
-                    <main style={styles.rightSide}>
+                    <main style={classes.rightSide}>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', gap: '1rem' }}>
                                 <Switch onChange={e => setAnsOnOff(!ansOnOff)} onLabel="ANS" offLabel="ANS" size="md" id="swid" label="Show Answers on/off" />

@@ -27,62 +27,7 @@ import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsa
 
 const QuestionPaperPage: FC = () => {
 
-    const styles = {
-        page: {
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: '#fff',
-            paddingRight: "3rem",
-            height: "100%",
-            marginBottom: 10,
-            padding: "2rem",
-            paddingTop: 0
-            // boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px'
-        },
-        section: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 20,
-            flexGrow: 1,
-            marginTop: "2rem"
-        },
-        topTitle: {
-            fontWeight: 700,
-        },
-        main: {
-            marginTop: "2rem"
-        },
-        qna: {
-            display: 'flex',
-            flexDirection: 'column',
-            height: "fit-content",
-            margin: "15px 0",
-        },
-        normal: {
-
-        },
-        ques: {
-            fontWeight: "bolder",
-            fontSize: "20px",
-        },
-        ans: {
-
-        },
-        mcqView: {
-            display: 'flex',
-            gap: '2rem',
-            margin: "0.5rem 0",
-            flexWrap: 'wrap',
-        },
-        ansContainer: {
-            display: 'flex',
-            flexDirection: 'column',
-            marginBottom: "1rem"
-        },
-    };
-
-    const { classes } = useStyles();
+    const { styles } = useStyles();
     const router = useRouter();
     const ref = useRef();
     const [ansOnOff, setAnsOnOff] = useState(false);

@@ -51,8 +51,6 @@ const QuestionPaperPage: FC = () => {
             fontWeight: 700,
         },
         main: {
-            // display: 'flex',
-            // flexDirection: 'column',
             marginTop: "2rem"
         },
         qna: {
@@ -254,23 +252,40 @@ const QuestionPaperPage: FC = () => {
                         </div>
 
 
-                        <div style={styles.main}>
+                        <div style={{ marginTop: "2rem" }}>
                             {questionAnswerData?.map((itm: any, i: Number) => {
                                 return (
-                                    <div key={itm?._id} style={styles.qna}>
-                                        <h3 style={styles.ques}>{Number(i) + 1}. {itm?.question}</h3>
+                                    <div key={itm?._id} style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        height: "fit-content",
+                                        margin: "15px 0",
+                                    }}>
+                                        <h3 style={{
+                                            fontWeight: "bolder",
+                                            fontSize: "20px",
+                                        }}>{Number(i) + 1}. {itm?.question}</h3>
                                         {
                                             itm?.type === "normal" ? <div style={styles.normal}>
                                                 {
                                                     ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
                                                 }
                                             </div> :
-                                                <div style={styles.ansContainer}>
-                                                    <div style={styles.mcqView}>{
-                                                        itm?.mcq?.map((itm: any, i) => {
-                                                            return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
-                                                        })
-                                                    }</div>
+                                                <div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    marginBottom: "1rem"
+                                                }}>
+                                                    <div style={{
+                                                        display: 'flex',
+                                                        gap: '2rem',
+                                                        margin: "0.5rem 0",
+                                                        flexWrap: 'wrap',
+                                                    }}>{
+                                                            itm?.mcq?.map((itm: any, i) => {
+                                                                return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
+                                                            })
+                                                        }</div>
                                                     {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{}} />}
 
                                                     {
@@ -460,7 +475,7 @@ const QuestionPaperPage: FC = () => {
             
              `}</style>
 
-        </div>
+        </div >
         )
     }
 

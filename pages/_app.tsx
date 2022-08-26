@@ -37,7 +37,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
 
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-            <NotificationsProvider position="top-right" >
+            <NotificationsProvider  style={{ zIndex: 200000,top: 100 }} position="top-right"  >
               <Component {...pageProps} />
             </NotificationsProvider>
           </MantineProvider>

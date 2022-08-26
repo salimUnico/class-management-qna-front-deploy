@@ -16,6 +16,7 @@ import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsa
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import 'react-quill/dist/quill.snow.css';
+import Link from 'next/link';
 
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
@@ -113,7 +114,7 @@ const QuestionPaperPage: FC = () => {
         }} className="page-container">
 
             <div className="watermark-container" >
-                <img src='/unico.png' />
+                <img src='/prayas.jpg' />
             </div>
 
             <div className='logo-container' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -131,9 +132,9 @@ const QuestionPaperPage: FC = () => {
                     <tr><td>
 
                         <div className="container w-full">
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <h1 style={{ margin: 0, fontSize: 25 }}>Topic: {notesData?.name}</h1>
-                            </div>
+                            </div> */}
                             {
                                 editorOption.map((item: any, i) => {
                                     return <>
@@ -161,27 +162,29 @@ const QuestionPaperPage: FC = () => {
             </table>
 
             <footer className='print-footer-container flex flex-col items-center'>
-                <div className="top w-full flex items-center justify-between">
-                    <div className='contain'>
+            <div className="top w-full flex items-center justify-between">
+                    <a href='/sasasasas' target={"_blank"} className='contain'>
                         <Message strokeWidth={2} color='#85053f' />
                         <span>info@theprayasindia.com</span>
-                    </div>
+                    </a>
                     <div className='contain'>
                         <BrandWhatsapp strokeWidth={2} color='#85053f' />
-                        <span>+91-7710013217 / 9892560176</span>
+                        <span><a href='tel:7710013217'>+91-7710013217</a> / <a href='tel:9892560176'>9892560176</a></span>
                     </div>
                     <div className='contain'>
                         <span>Follow Us</span>
                         <div style={{ marginLeft: "0.5rem" }}>
-                            <BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
-                            <BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
-                            <BrandTwitter strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} />
-                            <BrandLinkedin strokeWidth={2} color='#85053f' />
+                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandTwitter strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
                         </div>
                     </div>
                 </div>
                 <div className="bottom w-full">
-                    <h2>www.theprayasindia.com/e-pathshala</h2>
+                    <a style={{ color: "white" }} href='www.theprayasindia.com/e-pathshala' target={"_blank"}>
+                        <h2>www.theprayasindia.com/e-pathshala</h2>
+                    </a>
                 </div>
             </footer>
 
@@ -220,7 +223,10 @@ const QuestionPaperPage: FC = () => {
                 .print-footer-container {
                     margin-top: 2rem;
                 }
-
+                .print-footer-container a{
+                    color: black;
+                    text-decoration: none;
+                }
                 .print-footer-container .top .contain{
                     display: flex;
                     align-items: center;
@@ -288,8 +294,8 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234, background: '#fff' }}>
-                <HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} onClick={() => router.push('/notes')} />
-                <Title className={classes.title}><Text>{notesData?.name}</Text></Title>
+                <Link href={"/notes"}><a style={{ marginTop: '1rem', marginLeft: '2rem', cursor: 'pointer' }}><HomeIcon  height={31} width={31}  /></a></Link>
+                <Title className={classes.title} style={{ paddingLeft: "1rem" }} ><Text>{notesData?.name}</Text></Title>
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
                         <Button leftIcon={<PlusIcon />} style={{ marginLeft: "2rem", marginTop: "1rem" }} >Add</Button>
@@ -364,6 +370,28 @@ const QuestionPaperPage: FC = () => {
                                                     />
                                                         : item.type == "about" ? <>
                                                             <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
+                                                                modules={{
+                                                                    toolbar: [
+                                                                        [{ header: [1, 2, false] }],
+                                                                        ["bold", "italic", "underline", "strike", "blockquote"],
+                                                                        [{ list: "ordered" }, { list: "bullet" }],
+                                                                        [{ 'color': [] }, { 'background': [] }]
+                                                                    ]
+                                                                }}
+                                                                formats={[
+                                                                    "header",
+                                                                    "bold",
+                                                                    "italic",
+                                                                    "underline",
+                                                                    "strike",
+                                                                    "blockquote",
+                                                                    "list",
+                                                                    "bullet",
+                                                                    "indent",
+                                                                    "color",
+                                                                    "background"
+                                                                ]}
+
                                                                 value={item.value}
                                                                 onChange={(e) => {
                                                                     if (item.value !== e) {

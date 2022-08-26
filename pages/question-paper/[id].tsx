@@ -819,7 +819,6 @@ import 'react-quill/dist/quill.snow.css';
 import Link from 'next/link';
 
 
-
 const QuestionPaperPage: FC = () => {
 
     const { classes } = useStyles();
@@ -1288,7 +1287,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
-                <Link href={"/dashboard"}><a><HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer' }} /></a></Link>
+                <Link href={"/dashboard"}><a><HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer',color: "black" }} /></a></Link>
                 <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
@@ -1425,7 +1424,7 @@ const QuestionPaperPage: FC = () => {
                                                 [{ list: "ordered" }, { list: "bullet" }],
                                                 [{ 'color': [] }, { 'background': [] }],
                                                 [{ 'align': [] }],
-                                            ]
+                                            ],
                                         }}
                                         formats={[
                                             "header",

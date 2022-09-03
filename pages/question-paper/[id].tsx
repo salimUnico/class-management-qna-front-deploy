@@ -811,7 +811,7 @@ import type { RichTextEditorProps } from '@mantine/rte';
 
 //text editor css important
 // import "react-quill/dist/quill.core.css";
-import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, Message } from 'tabler-icons-react';
+import { BrandDribbble, BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, BrandYoutube, Message } from 'tabler-icons-react';
 
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -1061,10 +1061,11 @@ const QuestionPaperPage: FC = () => {
                     <div className='contain'>
                         <span>Follow Us</span>
                         <div style={{ marginLeft: "0.5rem" }}>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandTwitter strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.facebook.com/ThePrayasIndiaedu/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="http://instagram.com/theprayasindia/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.youtube.com/c/ThePrayasePathshala" target={"_blank"}><BrandYoutube strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.linkedin.com/in/the-prayas-india-552a83110/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
                         </div>
                     </div>
                 </div>

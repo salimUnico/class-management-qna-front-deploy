@@ -11,12 +11,27 @@ import ReactToPrint from 'react-to-print';
 
 import UploadImage from '../../helper/imageUpload';
 import { HomeIcon } from '@modulz/radix-icons';
-import { BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, Message } from 'tabler-icons-react';
+import { BrandDribbble, BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, BrandYoutube, Message } from 'tabler-icons-react';
 
 import dynamic from 'next/dynamic';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+// const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// import 'react-quill/dist/quill.snow.css';
 import Link from 'next/link';
+
+
+
+//table
+const ReactQuill = dynamic(() => import('react-quill-with-table'), {
+    ssr: false,
+});
+const QuillBetterTable = dynamic(() => import('quill-better-table'), {
+    ssr: false,
+});
+
+import "react-quill-with-table/dist/quill.snow.css";
+import "react-quill-with-table/dist/quill.bubble.css";
+
+
 
 const QuestionPaperPage: FC = () => {
     const { classes } = useStyles();
@@ -139,13 +154,12 @@ const QuestionPaperPage: FC = () => {
                                 editorOption.map((item: any, i) => {
                                     return <>
                                         {
-                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold' }}>{item?.value}</h1> :
-                                                item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
-                                                    item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
-                                                        item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                                            <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
-                                                        </div> :
-                                                            null
+                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold',marginTop: 0 }}>{item?.value}</h1> :
+                                            item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
+                                            item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
+                                            item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                            <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
+                                            </div> : null
                                         }
                                     </>
                                 })
@@ -174,10 +188,11 @@ const QuestionPaperPage: FC = () => {
                     <div className='contain'>
                         <span>Follow Us</span>
                         <div style={{ marginLeft: "0.5rem" }}>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandTwitter strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.unicoglobal.in/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.facebook.com/ThePrayasIndiaedu/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="http://instagram.com/theprayasindia/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.youtube.com/c/ThePrayasePathshala" target={"_blank"}><BrandYoutube strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            <a style={{ color: "#85053f" }} href="https://www.linkedin.com/in/the-prayas-india-552a83110/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
                         </div>
                     </div>
                 </div>

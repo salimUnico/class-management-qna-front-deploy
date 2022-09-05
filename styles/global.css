@@ -69,6 +69,10 @@
         height: 150px;
     }
 
+    .header-space{
+        height: 100px;
+    }
+
     .watermark-container {
         position: fixed !important;
         left: 0;

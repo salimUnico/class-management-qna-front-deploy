@@ -1010,22 +1010,25 @@ const QuestionPaperPage: FC = () => {
                                                     ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
                                                 }
                                             </div> :
+
                                                 <div style={{
                                                     display: 'flex',
                                                     flexDirection: 'column',
                                                     marginBottom: "1rem"
                                                 }}>
+                                                    {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{}} />}
                                                     <div style={{
                                                         display: 'flex',
                                                         gap: '2rem',
                                                         margin: "0.5rem 0",
                                                         flexWrap: 'wrap',
-                                                    }}>{
+                                                    }}>
+                                                        {
                                                             itm?.mcq?.map((itm: any, i) => {
                                                                 return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
                                                             })
                                                         }</div>
-                                                    {itm.questionimage && <img src={itm?.questionimage?.url} width={itm?.questionimage?.width} height={itm?.questionimage?.height} style={{}} />}
+                                                    
 
                                                     {
                                                         ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>

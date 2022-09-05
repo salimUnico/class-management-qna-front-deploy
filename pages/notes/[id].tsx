@@ -146,7 +146,7 @@ const QuestionPaperPage: FC = () => {
                 <tbody>
                     <tr><td>
 
-                        <div className="container w-full">
+                        <div className="container w-full" style={{ }}>
                             {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <h1 style={{ margin: 0, fontSize: 25 }}>Topic: {notesData?.name}</h1>
                             </div> */}
@@ -154,7 +154,7 @@ const QuestionPaperPage: FC = () => {
                                 editorOption.map((item: any, i) => {
                                     return <>
                                         {
-                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold',marginTop: 0 }}>{item?.value}</h1> :
+                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold',marginTop: 0,textAlign: "center" }}>{item?.value}</h1> :
                                             item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
                                             item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
                                             item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

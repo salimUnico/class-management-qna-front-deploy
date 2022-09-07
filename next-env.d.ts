@@ -6,3 +6,4 @@
 
 
 declare module "quill-better-table"
+declare module "react-quill-with-table"

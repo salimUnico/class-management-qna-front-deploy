@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FC, useEffect, useState, useRef } from 'react';
 import { Button, Switch, Card, TextInput, Title, Tabs, Popover, Textarea, FileInput, Text } from '@mantine/core';
 import useStyles from '../../styles/question-paper.style';
@@ -19,14 +20,14 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 //table
-import ReactQuill from 'react-quill-with-table';
-import QuillBetterTable from 'quill-better-table';
-// const ReactQuill = dynamic(() => import('react-quill-with-table'), {
-//     ssr: false,
-// });
-// const QuillBetterTable = dynamic(() => import('quill-better-table'), {
-//     ssr: false,
-// });
+// import ReactQuill from 'react-quill-with-table';
+// import QuillBetterTable from 'quill-better-table';
+const ReactQuill = dynamic(() => import('react-quill-with-table'), {
+    ssr: false,
+});
+const QuillBetterTable = dynamic(() => import('quill-better-table'), {
+    ssr: false,
+});
 
 import "react-quill-with-table/dist/quill.snow.css";
 import "react-quill-with-table/dist/quill.bubble.css";
@@ -483,8 +484,8 @@ const QuestionPaperPage: FC = () => {
 
 export default QuestionPaperPage;
 
-export async function getStaticProps(context) {
-    return {
-        props: {}, // will be passed to the page component as props
-    }
-}
+// export async function getStaticProps(context) {
+//     return {
+//         props: {}, // will be passed to the page component as props
+//     }
+// }

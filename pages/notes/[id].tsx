@@ -18,15 +18,15 @@ import dynamic from 'next/dynamic';
 // import 'react-quill/dist/quill.snow.css';
 import Link from 'next/link';
 
-
-
 //table
-const ReactQuill = dynamic(() => import('react-quill-with-table'), {
-    ssr: false,
-});
-const QuillBetterTable = dynamic(() => import('quill-better-table'), {
-    ssr: false,
-});
+import ReactQuill from 'react-quill-with-table';
+import QuillBetterTable from 'quill-better-table';
+// const ReactQuill = dynamic(() => import('react-quill-with-table'), {
+//     ssr: false,
+// });
+// const QuillBetterTable = dynamic(() => import('quill-better-table'), {
+//     ssr: false,
+// });
 
 import "react-quill-with-table/dist/quill.snow.css";
 import "react-quill-with-table/dist/quill.bubble.css";
@@ -34,6 +34,7 @@ import "react-quill-with-table/dist/quill.bubble.css";
 
 
 const QuestionPaperPage: FC = () => {
+
     const { classes } = useStyles();
     const router = useRouter();
     const ref = useRef();
@@ -146,7 +147,7 @@ const QuestionPaperPage: FC = () => {
                 <tbody>
                     <tr><td>
 
-                        <div className="container w-full" style={{ }}>
+                        <div className="container w-full" style={{}}>
                             {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                 <h1 style={{ margin: 0, fontSize: 25 }}>Topic: {notesData?.name}</h1>
                             </div> */}
@@ -154,12 +155,12 @@ const QuestionPaperPage: FC = () => {
                                 editorOption.map((item: any, i) => {
                                     return <>
                                         {
-                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold',marginTop: 0,textAlign: "center" }}>{item?.value}</h1> :
-                                            item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
-                                            item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
-                                            item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
-                                            </div> : null
+                                            item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold', marginTop: 0, textAlign: "center" }}>{item?.value}</h1> :
+                                                item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
+                                                    item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
+                                                        item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                            <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
+                                                        </div> : null
                                         }
                                     </>
                                 })
@@ -176,7 +177,7 @@ const QuestionPaperPage: FC = () => {
             </table>
 
             <footer className='print-footer-container flex flex-col items-center'>
-            <div className="top w-full flex items-center justify-between">
+                <div className="top w-full flex items-center justify-between">
                     <a href='/sasasasas' target={"_blank"} className='contain'>
                         <Message strokeWidth={2} color='#85053f' />
                         <span>info@theprayasindia.com</span>
@@ -309,7 +310,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: "flex", alignItems: "center", position: "sticky", top: 0, width: "100%", zIndex: 1234, background: '#fff' }}>
-                <Link href={"/notes"}><a style={{ marginTop: '1rem', marginLeft: '2rem', cursor: 'pointer' }}><HomeIcon  height={31} width={31}  /></a></Link>
+                <Link href={"/notes"}><a style={{ marginTop: '1rem', marginLeft: '2rem', cursor: 'pointer' }}><HomeIcon height={31} width={31} /></a></Link>
                 <Title className={classes.title} style={{ paddingLeft: "1rem" }} ><Text>{notesData?.name}</Text></Title>
                 <Popover width={200} position="bottom" withArrow shadow="md" id='addPopover'>
                     <Popover.Target>
@@ -481,3 +482,9 @@ const QuestionPaperPage: FC = () => {
 }
 
 export default QuestionPaperPage;
+
+export async function getStaticProps(context) {
+    return {
+        props: {}, // will be passed to the page component as props
+    }
+}

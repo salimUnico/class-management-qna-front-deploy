@@ -20,6 +20,7 @@ export default function TextEditor(props: { content: string, setContent: any, cu
   const config = {
     height: 400,
     width: "auto",
+    toolbarAdaptive: false,
     buttons: [
       // 'source',
       // '|',
@@ -52,7 +53,7 @@ export default function TextEditor(props: { content: string, setContent: any, cu
       'fullsize',
       'preview'
     ],
-    toolbarAdaptive: false
+    ...customConfig
   };
   const handleUpdate = (event) => {
     const editorContent = event?.target?.innerHTML || event;
@@ -64,7 +65,7 @@ export default function TextEditor(props: { content: string, setContent: any, cu
       <JoditEditor
         // ref={editor}
         value={content}
-        config={{...config, ...customConfig}}
+        config={config}
         onBlur={handleUpdate}
         // onChange={(newContent) => {
         //   console.log("JoditEditor onchange",newContent);

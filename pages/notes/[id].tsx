@@ -203,7 +203,7 @@ const QuestionPaperPage: FC = () => {
                 </div>
                 <div className="bottom w-full">
                     <a style={{ color: "white" }} href='https://theprayasindia.com' target={"_blank"}>
-                        <h2>https://theprayasindia.com'</h2>
+                        <h2>https://theprayasindia.com</h2>
                     </a>
                 </div>
             </footer>

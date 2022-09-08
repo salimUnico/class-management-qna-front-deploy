@@ -820,7 +820,6 @@ import Link from 'next/link';
 
 import TextEditor from '../../components/TextEditor';
 
-
 const QuestionPaperPage: FC = () => {
 
     const { classes } = useStyles();
@@ -1030,7 +1029,7 @@ const QuestionPaperPage: FC = () => {
                                                                 return itm && <p style={{ fontSize: "18px", }} ><span className='bolder'>{mcqAlphas[i]} </span><span>{itm}</span></p>
                                                             })
                                                         }</div>
-                                                    
+
 
                                                     {
                                                         ansOnOff && <p style={{ fontSize: "18px" }}><span className='bolder'>Ans: </span><span style={{ marginLeft: "0.5rem" }}>{itm?.ans}</span></p>
@@ -1293,7 +1292,7 @@ const QuestionPaperPage: FC = () => {
     return (
         <div className={classes.container}>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: '#fff', paddingBottom: '1rem', top: '0', position: 'sticky', zIndex: 12233 }}>
-                <Link href={"/dashboard"}><a><HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer',color: "black" }} /></a></Link>
+                <Link href={"/dashboard"}><a><HomeIcon height={31} width={31} style={{ marginTop: '1rem', marginLeft: '2rem', marginRight: '-1rem', cursor: 'pointer', color: "black" }} /></a></Link>
                 <Title className={classes.title} ><Text>{questionPaperData.name}</Text></Title>
                 <div style={{ marginTop: '1rem' }}>
                     <Popover width={900} position="bottom" withArrow shadow="md" id="popverddnotes" >
@@ -1452,7 +1451,12 @@ const QuestionPaperPage: FC = () => {
                                             setmodalData({ ...modalData, bannerInstructionFirst: e })
                                         }} /> */}
 
-                                    <TextEditor content={modalData.bannerInstructionFirst || questionPaperData.bannerInstructionFirst} setContent={(e)=> setmodalData({ ...modalData, bannerInstructionFirst: e })} />
+                                    <TextEditor
+                                        customConfig={{
+                                            "buttons": ["bold", "italic", "underline", "strikethrough", "brush", "|", "ul", "ol", "font", "fontsize", "paragraph", "lineHeight", "|", "cut", "copy", "paste", "selectall", "|", "hr", "table", "link", "symbols", "indent", "outdent", "|", { name:"Left",list: ['left', 'center', 'right', 'justify'] }, "|", "undo", "redo", "find", "fullsize", "print", "preview", "source"]
+                                        }}
+                                        content={modalData.bannerInstructionFirst || questionPaperData.bannerInstructionFirst}
+                                        setContent={(e) => setmodalData({ ...modalData, bannerInstructionFirst: e })} />
 
                                 </div>
 

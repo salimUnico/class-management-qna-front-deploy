@@ -1,17 +1,25 @@
 import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 
-const JoditEditor = dynamic(()=> import("jodit-react"),{
-    ssr: false
+const JoditEditor = dynamic(() => import("jodit-react"), {
+  ssr: false
 })
 
-export default function TextEditor({ content,setContent }) {
-  const editor = useRef(null);
+// interface TextEditorProps {
+//   content: string,
+//   setContent: (e) => any,
+//   customConfig?: object
+// }
+
+export default function TextEditor(props: { content: string, setContent: any, customConfig?: object }) {
+  const { content, setContent, customConfig } = props;
+
+  const editor = useRef();
 
   // const [content, setContent] = useState("");
   const config = {
-    readonly: false,
     height: 400,
+    width: "auto",
     buttons: [
       // 'source',
       // '|',
@@ -43,7 +51,8 @@ export default function TextEditor({ content,setContent }) {
       // 'eraser',
       'fullsize',
       'preview'
-  ],
+    ],
+    toolbarAdaptive: false
   };
   const handleUpdate = (event) => {
     const editorContent = event?.target?.innerHTML || event;
@@ -53,13 +62,13 @@ export default function TextEditor({ content,setContent }) {
   return (
     <div className="editor-container">
       <JoditEditor
-        ref={editor}
+        // ref={editor}
         value={content}
-        config={config}
+        config={{...config, ...customConfig}}
         onBlur={handleUpdate}
-        onChange={(newContent) => {
-          // console.log("JoditEditor onchange",newContent);
-        }}
+        // onChange={(newContent) => {
+        //   console.log("JoditEditor onchange",newContent);
+        // }}
       />
       {/* <div className="jodit-wysiwyg" dangerouslySetInnerHTML={{ __html: content }} /> */}
 

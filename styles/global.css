@@ -39,6 +39,10 @@
     background-color: red;
 } */
 
+.border-none{
+    border: none !important;
+}
+
 
 @media print {
     footer {

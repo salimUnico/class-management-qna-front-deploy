@@ -33,7 +33,7 @@ import Link from 'next/link';
 // import "react-quill-with-table/dist/quill.bubble.css";
 
 import TextEditor from '../../components/TextEditor';
-import 'jodit/build/jodit.min.css'
+// import 'jodit/build/jodit.min.css'
 
 const QuestionPaperPage: FC = () => {
 
@@ -141,15 +141,15 @@ const QuestionPaperPage: FC = () => {
                 <img src="https://theprayasindia.com/wp-content/uploads/2021/05/Logo-1.png" height={100} width={250} style={{ objectFit: "contain" }} />
             </div>
 
-            <table>
-                <thead>
-                    <tr><td>
+            <table className='border-none'>
+                <thead  className='border-none'>
+                    <tr className='border-none'><td className='border-none'>
                         <div className="header-space"></div>
 
                     </td></tr>
                 </thead>
-                <tbody>
-                    <tr><td>
+                <tbody className='border-none'>
+                    <tr className='border-none'><td  className='border-none'>
 
                         <div className="container w-full" style={{}}>
                             {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -173,14 +173,14 @@ const QuestionPaperPage: FC = () => {
 
                     </td></tr>
                 </tbody>
-                <tfoot>
-                    <tr><td>
+                <tfoot className='border-none'>
+                    <tr className='border-none'><td className='border-none'>
                         <div className="footer-space"></div>
                     </td></tr>
                 </tfoot>
             </table>
 
-            <footer className='print-footer-container flex flex-col items-center'>
+            <footer className='print-footer-container flex flex-col items-center border-none '>
                 <div className="top w-full flex items-center justify-between">
                     <a href='mailto:info@theprayasindia.com' target={"_blank"} className='contain'>
                         <Message strokeWidth={2} color='#85053f' />
@@ -439,7 +439,7 @@ const QuestionPaperPage: FC = () => {
 
                                                             <TextEditor content={item.value} setContent={(e) => {
                                                                 changeValue({ value: e }, index);
-                                                            }} />
+                                                            }}  />
                                                         </>
                                                             : item.type == "addimg" &&
                                                             <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center', gap: '1rem', borderRadius: '5px' }}>
@@ -466,6 +466,7 @@ const QuestionPaperPage: FC = () => {
                                                     updateData = updateData.filter((data: any) => data.id != item.id);
                                                     seteditorOption(updateData);
                                                 }}
+                                                style={{ marginBottom: "1rem",marginTop: "1rem" }}
                                             >Delete</Button>
                                         </div>
                                     })

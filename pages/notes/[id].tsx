@@ -15,24 +15,25 @@ import { HomeIcon } from '@modulz/radix-icons';
 import { BrandDribbble, BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, BrandYoutube, Message } from 'tabler-icons-react';
 
 import dynamic from 'next/dynamic';
-// const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// const ReactQuill = dynamic(() => import('react-quill'), { ssr: false },index);
 // import 'react-quill/dist/quill.snow.css';
 import Link from 'next/link';
 
 //table
 // import ReactQuill from 'react-quill-with-table';
 // import QuillBetterTable from 'quill-better-table';
-const ReactQuill = dynamic(() => import('react-quill-with-table'), {
-    ssr: false,
-});
-const QuillBetterTable = dynamic(() => import('quill-better-table'), {
-    ssr: false,
-});
+// const ReactQuill = dynamic(() => import('react-quill-with-table'), {
+//     ssr: false,
+// });
+// const QuillBetterTable = dynamic(() => import('quill-better-table'), {
+//     ssr: false,
+// });
 
-import "react-quill-with-table/dist/quill.snow.css";
-import "react-quill-with-table/dist/quill.bubble.css";
+// import "react-quill-with-table/dist/quill.snow.css";
+// import "react-quill-with-table/dist/quill.bubble.css";
 
-
+import TextEditor from '../../components/TextEditor';
+import 'jodit/build/jodit.min.css'
 
 const QuestionPaperPage: FC = () => {
 
@@ -51,6 +52,8 @@ const QuestionPaperPage: FC = () => {
             if (data?.data?.success) {
                 setNotesData(data?.data?.data)
                 seteditorOption(data?.data?.data?.json)
+                updateData = data?.data?.data?.json;
+
                 setLoading(false);
             }
         } catch (error: any) {
@@ -87,7 +90,7 @@ const QuestionPaperPage: FC = () => {
         setLoadingQ(true);
         try {
             // const { question, option1, ans, option2, option3, option4 } = qna;
-            const data = await axios.put(`/admin/notes/${router.query.id}`, { json: editorOption });
+            const data = await axios.put(`/admin/notes/${router.query.id}`, { json: updateData });
             if (data?.data?.success) {
                 showNotification({
                     title: 'Success',
@@ -158,7 +161,7 @@ const QuestionPaperPage: FC = () => {
                                         {
                                             item?.type === 'title' ? <h1 key={item?.id} style={{ fontSize: '40px', fontWeight: 'bold', marginTop: 0, textAlign: "center" }}>{item?.value}</h1> :
                                                 item?.type === 'subtitle' ? <h3 key={item?.id} style={{ fontSize: '25px', fontWeight: 400 }}>{item?.value}</h3> :
-                                                    item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill ql-editor" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
+                                                    item?.type === 'about' ? <div style={{ marginLeft: '-1rem' }} className="w-fill jodit-wysiwyg" key={item?.id} dangerouslySetInnerHTML={{ __html: item?.value }} /> :
                                                         item?.type === 'addimg' ? <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                                             <img key={item?.id} src={item?.value} height={item?.h ?? 400} width={item?.w ?? 450} alt="img" style={{ marginBottom: '1rem', objectFit: 'cover' }} />
                                                         </div> : null
@@ -179,7 +182,7 @@ const QuestionPaperPage: FC = () => {
 
             <footer className='print-footer-container flex flex-col items-center'>
                 <div className="top w-full flex items-center justify-between">
-                    <a href='/sasasasas' target={"_blank"} className='contain'>
+                    <a href='mailto:info@theprayasindia.com' target={"_blank"} className='contain'>
                         <Message strokeWidth={2} color='#85053f' />
                         <span>info@theprayasindia.com</span>
                     </a>
@@ -193,14 +196,14 @@ const QuestionPaperPage: FC = () => {
                             <a style={{ color: "#85053f" }} href="https://www.facebook.com/ThePrayasIndiaedu/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
                             <a style={{ color: "#85053f" }} href="http://instagram.com/theprayasindia/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
                             <a style={{ color: "#85053f" }} href="https://www.youtube.com/c/ThePrayasePathshala" target={"_blank"}><BrandYoutube strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            {/* <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a> */}
                             <a style={{ color: "#85053f" }} href="https://www.linkedin.com/in/the-prayas-india-552a83110/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
                         </div>
                     </div>
                 </div>
                 <div className="bottom w-full">
-                    <a style={{ color: "white" }} href='www.theprayasindia.com/e-pathshala' target={"_blank"}>
-                        <h2>www.theprayasindia.com/e-pathshala</h2>
+                    <a style={{ color: "white" }} href='https://theprayasindia.com' target={"_blank"}>
+                        <h2>https://theprayasindia.com'</h2>
                     </a>
                 </div>
             </footer>
@@ -283,28 +286,37 @@ const QuestionPaperPage: FC = () => {
 
 
     const [editorOption, seteditorOption] = useState([])
+    let updateData = editorOption;
 
     const addOption = (type, data) => {
         seteditorOption((old) => {
-            return [...old, {
+            let finalArr = [...old, {
                 id: old?.length ? old[old?.length - 1]?.id + 1 : old.length - 1,
                 value: "",
                 type,
                 ...data
             }]
+            updateData = finalArr;
+            return finalArr;
         })
     }
 
-    const changeValue = (data) => {
-        let finalArr = editorOption.map((item) => {
-            if (item.id == data.id) {
-                return data;
-            } else {
-                return item;
-            }
-        })
+    const changeValue = (data, i) => {
+        // let finalArr = editorOption.map((item) => {
+        //     if (item.id == data.id) {
+        //         return data;
+        //     } else {
+        //         return item;
+        //     }
+        // })
 
-        seteditorOption(finalArr)
+
+        // let finalArr = [...editorOption];
+        // finalArr[i].value = data.value;
+        // seteditorOption(finalArr)
+
+        // finalArr[i].value = data.value;
+        updateData[i].value = data.value;
     }
 
 
@@ -371,22 +383,22 @@ const QuestionPaperPage: FC = () => {
                                                 item.type == "title" ? <TextInput
                                                     label="Title"
                                                     required
-                                                    value={item.value}
+                                                    defaultValue={item.value}
                                                     id="titleinput"
                                                     style={{ marginBottom: "0.5rem", width: "80%" }}
 
-                                                    onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
+                                                    onChange={(e) => changeValue({ value: e.currentTarget.value }, index)}
                                                 />
                                                     : item.type == "subtitle" ? <TextInput
                                                         label="Sub Title"
                                                         required
-                                                        value={item.value}
-                                                        onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
+                                                        defaultValue={item.value}
+                                                        onChange={(e) => changeValue({ value: e.currentTarget.value }, index)}
                                                         id="subtitleinput"
                                                         style={{ marginBottom: "0.5rem" }}
                                                     />
                                                         : item.type == "about" ? <>
-                                                            <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
+                                                            {/* <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
                                                                 modules={{
                                                                     toolbar: [
                                                                         [{ header: [1, 2, false] }],
@@ -409,21 +421,25 @@ const QuestionPaperPage: FC = () => {
                                                                     "background"
                                                                 ]}
 
-                                                                value={item.value}
+                                                                defaultValue={item.value}
                                                                 onChange={(e) => {
                                                                     if (item.value !== e) {
-                                                                        changeValue({ ...item, value: e })
+                                                                        changeValue({ value: e },index)
                                                                         console.log(e)
                                                                     }
-                                                                }} />
+                                                                }} /> */}
                                                             {/* <Textarea
                                                                 label="Paragraph"
                                                                 required
-                                                                value={item.value}
-                                                                onChange={(e) => changeValue({ ...item, value: e.currentTarget.value })}
+                                                                defaultValue={item.value}
+                                                                onChange={(e) => changeValue({ value: e.currentTarget.value },index)}
                                                                 id="aboutinput"
                                                                 style={{ marginBottom: "0.5rem" }}
                                                             /> */}
+
+                                                            <TextEditor content={item.value} setContent={(e) => {
+                                                                changeValue({ value: e }, index);
+                                                            }} />
                                                         </>
                                                             : item.type == "addimg" &&
                                                             <div style={{ display: 'flex', marginBottom: '1rem', alignItems: 'center', gap: '1rem', borderRadius: '5px' }}>
@@ -431,20 +447,26 @@ const QuestionPaperPage: FC = () => {
                                                                     <img src={item?.value} height={100} width={140} style={{ objectFit: 'cover' }} />
                                                                 </div>
                                                                 <div>
-                                                                    <FileInput value={item.value} onChange={async (e) => {
+                                                                    <FileInput defaultValue={item.value} onChange={async (e) => {
                                                                         let refName = `notes_image/${Date.now()}_notes`;
                                                                         const res = await UploadImage(e, refName);
                                                                         // console.log(res)
-                                                                        changeValue({ ...item, value: res })
+                                                                        changeValue({ value: res })
                                                                     }} label={`Add Image`} placeholder="Click Here" accept="image/png,image/jpeg" />
                                                                     <div style={{ display: 'flex', gap: '1rem' }}>
-                                                                        <TextInput label="height" id="height" value={item?.h} onChange={(e) => changeValue({ ...item, h: e.currentTarget.value })} />
-                                                                        <TextInput label="width" id="width" value={item?.w} onChange={(e) => changeValue({ ...item, w: e.currentTarget.value })} />
+                                                                        <TextInput label="height" id="height" defaultValue={item?.h} onChange={(e) => changeValue({ h: e.currentTarget.value }, index)} />
+                                                                        <TextInput label="width" id="width" defaultValue={item?.w} onChange={(e) => changeValue({ w: e.currentTarget.value }, index)} />
                                                                     </div>
                                                                 </div>
                                                             </div>
                                             }
-                                            <Button color="red" onClick={() => seteditorOption((old) => old.filter((data: any) => data.id != item.id))}>Delete</Button>
+                                            <Button color="red"
+                                                // onClick={() => seteditorOption((old) => old.filter((data: any) => data.id != item.id))}
+                                                onClick={() => {
+                                                    updateData = updateData.filter((data: any) => data.id != item.id);
+                                                    seteditorOption(updateData);
+                                                }}
+                                            >Delete</Button>
                                         </div>
                                     })
                                 }

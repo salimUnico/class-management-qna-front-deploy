@@ -814,9 +814,11 @@ import type { RichTextEditorProps } from '@mantine/rte';
 import { BrandDribbble, BrandFacebook, BrandInstagram, BrandLinkedin, BrandTwitter, BrandWhatsapp, BrandYoutube, Message } from 'tabler-icons-react';
 
 import dynamic from 'next/dynamic';
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+// const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// import 'react-quill/dist/quill.snow.css';
 import Link from 'next/link';
+
+import TextEditor from '../../components/TextEditor';
 
 
 const QuestionPaperPage: FC = () => {
@@ -1053,7 +1055,7 @@ const QuestionPaperPage: FC = () => {
 
             <footer className='print-footer-container flex flex-col items-center'>
                 <div className="top w-full flex items-center justify-between">
-                    <a href='/sasasasas' target={"_blank"} className='contain'>
+                    <a href='mailto:info@theprayasindia.com' target={"_blank"} className='contain'>
                         <Message strokeWidth={2} color='#85053f' />
                         <span>info@theprayasindia.com</span>
                     </a>
@@ -1067,14 +1069,14 @@ const QuestionPaperPage: FC = () => {
                             <a style={{ color: "#85053f" }} href="https://www.facebook.com/ThePrayasIndiaedu/" target={"_blank"}><BrandFacebook strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
                             <a style={{ color: "#85053f" }} href="http://instagram.com/theprayasindia/" target={"_blank"}><BrandInstagram strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
                             <a style={{ color: "#85053f" }} href="https://www.youtube.com/c/ThePrayasePathshala" target={"_blank"}><BrandYoutube strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
-                            <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a>
+                            {/* <a style={{ color: "#85053f" }} href="https://www.theprayasindia.com/" target={"_blank"}><BrandDribbble strokeWidth={2} color='#85053f' style={{ marginRight: "0.3rem" }} /></a> */}
                             <a style={{ color: "#85053f" }} href="https://www.linkedin.com/in/the-prayas-india-552a83110/" target={"_blank"}><BrandLinkedin strokeWidth={2} color='#85053f' /></a>
                         </div>
                     </div>
                 </div>
                 <div className="bottom w-full">
-                    <a style={{ color: "white" }} href='www.theprayasindia.com/e-pathshala' target={"_blank"}>
-                        <h2>www.theprayasindia.com/e-pathshala</h2>
+                    <a style={{ color: "white" }} href='https://theprayasindia.com' target={"_blank"}>
+                        <h2>https://theprayasindia.com'</h2>
                     </a>
                 </div>
             </footer>
@@ -1420,7 +1422,7 @@ const QuestionPaperPage: FC = () => {
 
 
 
-                                    <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
+                                    {/* <ReactQuill theme="snow" style={{ margin: "1rem 0" }}
                                         modules={{
                                             toolbar: [
                                                 [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -1448,7 +1450,9 @@ const QuestionPaperPage: FC = () => {
                                         value={modalData.bannerInstructionFirst || questionPaperData.bannerInstructionFirst}
                                         onChange={(e) => {
                                             setmodalData({ ...modalData, bannerInstructionFirst: e })
-                                        }} />
+                                        }} /> */}
+
+                                    <TextEditor content={modalData.bannerInstructionFirst || questionPaperData.bannerInstructionFirst} setContent={(e)=> setmodalData({ ...modalData, bannerInstructionFirst: e })} />
 
                                 </div>
 

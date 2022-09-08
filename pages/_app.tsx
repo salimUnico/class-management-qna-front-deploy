@@ -32,12 +32,11 @@ export default function App(props: AppProps & { colorScheme: ColorScheme }) {
           <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
           <link rel="shortcut icon" href="/favicon.svg" />
           {/* <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.4/quill.snow.css" />  */}
-
         </Head>
 
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-            <NotificationsProvider  style={{ zIndex: 200000,top: 100 }} position="top-right"  >
+            <NotificationsProvider style={{ zIndex: 200000, top: 100 }} position="top-right"  >
               <Component {...pageProps} />
             </NotificationsProvider>
           </MantineProvider>
